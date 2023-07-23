@@ -1,24 +1,19 @@
 <script lang="ts">
-	import { browser } from '$app/environment';
 	import { page } from '$app/stores';
+	import Navigator from '$lib/navigator.svelte';
 	import type { PageData } from './$types';
 
 	export let data: PageData;
-	// $: section = $page.params.sections.split('/');
-	// console.log(data.paths);
 
-	const warnings = data.warnings;
-	const meta = data.meta;
+	$: ({ warnings, meta, content, allPaths, paths } = data);
 
-	if (warnings.length) {
-		for (let i = 0, iLen = data.warnings.length; i < iLen; i++) {
-			console.log(...data.warnings[i]);
+	if (warnings?.length) {
+		for (let i = 0, iLen = warnings.length; i < iLen; i++) {
+			console.log(...warnings[i]);
 		}
 	}
 
-	if (browser) {
-		console.log(data);
-	}
+	const baseHref = $page.url.pathname.split('/').slice(0, 3).join('/');
 </script>
 
 <svelte:head>
@@ -30,7 +25,10 @@
 	{/if}
 </svelte:head>
 
-{#if warnings.length}
+<Navigator {allPaths} wayToPath={[...paths]} {baseHref} />
+
+{#if warnings?.length}
 	<h1>Warnings: check console for error.</h1>
 {/if}
-{@html data.content}
+
+{@html content}
