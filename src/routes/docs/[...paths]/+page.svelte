@@ -1,11 +1,12 @@
 <script lang="ts">
 	import { page } from '$app/stores';
+	import Filenav from '$lib/filenav.svelte';
 	import Navigator from '$lib/navigator.svelte';
 	import type { PageData } from './$types';
 
 	export let data: PageData;
 
-	$: ({ warnings, meta, content, allPaths, paths } = data);
+	$: ({ warnings, meta, content, allPaths, paths, path } = data);
 
 	if (warnings?.length) {
 		for (let i = 0, iLen = warnings.length; i < iLen; i++) {
@@ -14,6 +15,13 @@
 	}
 
 	const baseHref = $page.url.pathname.split('/').slice(0, 3).join('/');
+
+	let codeDiv: Element;
+
+	function loadFile(event) {
+		const { fileName, code } = event.detail;
+		codeDiv.innerHTML = code;
+	}
 </script>
 
 <svelte:head>
@@ -32,3 +40,8 @@
 {/if}
 
 {@html content}
+{#if path.codeFiles}
+	<Filenav codeFiles={path.codeFiles} on:loadFile={loadFile} />
+{/if}
+
+<div class="code" bind:this={codeDiv} />
