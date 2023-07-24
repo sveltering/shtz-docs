@@ -22,6 +22,7 @@
 	const fileTypeAliases = { html: 'html5' };
 </script>
 
+<h1>The code</h1>
 <div class="code-container">
 	<div class="code-column nav">
 		<Filenav codeFiles={path.codeFiles} on:loadFile={loadFile} />
@@ -85,7 +86,6 @@
 <style>
 	.nav {
 		background: #111;
-		min-width: 250px;
 	}
 	.icon:before {
 		width: 20px;
@@ -111,8 +111,6 @@
 	}
 	.code-container .code-column.content .code-outer {
 		display: none;
-		/* padding: 10px; */
-		min-width: 500px;
 		line-height: 1.3rem;
 	}
 	.code-container .code-column.content .code-outer .navigate {

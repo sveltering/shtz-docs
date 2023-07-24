@@ -42,21 +42,24 @@
 	<div class="column">
 		<Navigator {allPaths} wayToPath={[...paths]} {baseHref} />
 	</div>
-	<div class="column content">
-		{@html content}
-	</div>
-
-	{#if path.codeFiles}
-		<div class="column">
-			<Code {path} />
+	<div class="content column">
+		<div class="md">
+			{@html content}
 		</div>
-	{/if}
+
+		{#if path.codeFiles}
+			<div class="code">
+				<Code {path} />
+			</div>
+		{/if}
+	</div>
 </div>
 
 <style>
 	.container {
 		min-width: 0;
-		min-width: 100%;
+		max-width: 100%;
+		width: 100%;
 		padding: 10px;
 		display: inline-flex;
 		flex-direction: row;
@@ -69,5 +72,30 @@
 	}
 	.container .column.content {
 		flex-grow: 1;
+		display: inline-flex;
+		flex-direction: row;
+		justify-content: space-between;
+		align-content: flex-start;
+		align-items: flex-start;
+	}
+	.container .column.content .md {
+		min-width: 500px;
+	}
+	.container .column.content .code {
+		width: 100%;
+	}
+	@media (max-width: 1500px) {
+		.container .column.content {
+			flex-direction: column;
+			align-items: initial;
+		}
+		.container .column.content > div {
+			flex-grow: 1;
+			margin-bottom: 30px;
+		}
+	}
+	@media (min-width: 1400px) {
+		.container .column.content > div {
+		}
 	}
 </style>
