@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { afterNavigate } from '$app/navigation';
 	import { page } from '$app/stores';
+	import Code from '$lib/code.svelte';
 	import Filenav from '$lib/filenav.svelte';
 	import Header from '$lib/header.svelte';
 	import Navigator from '$lib/navigator.svelte';
@@ -18,17 +19,9 @@
 
 	const baseHref = $page.url.pathname.split('/').slice(0, 3).join('/');
 
-	let codeDiv: Element;
 	afterNavigate(function () {
 		document.title = meta?.title || 'SHTZ docs';
-		codeDiv.innerHTML = '';
 	});
-
-	function loadFile(event) {
-		const { fileName, code, id } = event.detail;
-		console.log(id);
-		codeDiv.innerHTML = code;
-	}
 </script>
 
 <svelte:head>
@@ -55,14 +48,7 @@
 
 	{#if path.codeFiles}
 		<div class="column">
-			<div class="code-container">
-				<div class="code-column">
-					<Filenav codeFiles={path.codeFiles} on:loadFile={loadFile} />
-				</div>
-				<div class="code-column content">
-					<div class="code" bind:this={codeDiv} />
-				</div>
-			</div>
+			<Code {path} />
 		</div>
 	{/if}
 </div>
@@ -80,20 +66,6 @@
 		padding: 10px;
 	}
 	.container .column.content {
-		flex: auto;
-	}
-	.code-container {
-		display: flex;
-		flex-direction: row;
-		justify-content: space-between;
-		align-content: flex-start;
-		align-items: flex-start;
-	}
-	.code-container .code-column {
-		min-width: 200px;
-		padding: 10px;
-	}
-	.code-container .code-column.content {
 		flex: auto;
 	}
 </style>

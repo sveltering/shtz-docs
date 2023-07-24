@@ -167,14 +167,21 @@ async function getTxtFilesRecursive(path: string, startPath = '') {
 				return { dir: dir.name };
 			}
 			if (dir.name.slice(-4) === '.txt') {
+				const filePath = startPath + '/' + dir.name;
+				const filePathSplit = filePath.split('/');
+				filePathSplit.shift();
 				return {
 					file: dir.name.slice(0, -4),
-					id: (startPath + '/' + dir.name)
-						.toLowerCase()
-						.replace(/ /g, '-')
-						.replace(/[^\w-]+/g, '-')
+					filePath: filePathSplit,
+					id: filePath.replace(/ /g, '-').replace(/[^\w-]+/g, '-')
 				};
 			}
+		})
+		.sort((a, b) => {
+			if (a?.dir) {
+				return -1;
+			}
+			return 1;
 		});
 
 	for (let i = 0, iLen = files.length; i < iLen; i++) {

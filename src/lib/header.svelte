@@ -1,9 +1,12 @@
-<script>
+<script lang="ts">
 	import { onDestroy, onMount } from 'svelte';
 
-	let timeouts = [];
+	let navbar: Element;
+	let timeouts: any = [];
 	onMount(function () {
-		let logos = document.querySelectorAll('.i-logo');
+		let logo = navbar.querySelector('.logo');
+		logo?.classList.add('animating');
+		let logos = navbar.querySelectorAll('.i-logo');
 		timeouts.push(
 			setTimeout(function () {
 				for (let i = 0, iLen = logos.length; i < iLen; i++) {
@@ -32,6 +35,7 @@
 				for (let i = 0, iLen = logos.length; i < iLen; i++) {
 					logos[i].classList.add('noanim');
 				}
+				logo?.classList.remove('animating');
 			}, 5000)
 		);
 	});
@@ -42,7 +46,7 @@
 	});
 </script>
 
-<div class="navbar">
+<div class="navbar" bind:this={navbar}>
 	<div class="inner">
 		<a href="/" class="logo-href">
 			<div class="logo">
@@ -101,6 +105,15 @@
 		margin-left: -30px;
 		/* z-index: 1; */
 	}
+	.navbar .logo:not(.animating) .i-logo:hover img {
+		animation: fadeOut 1s;
+		animation-fill-mode: forwards;
+	}
+	.navbar .logo:not(.animating) .i-logo:hover .i-letter {
+		animation: fadeIn 1s;
+		animation-fill-mode: forwards;
+	}
+
 	/* .logo .i-logo.trpc {
 		z-index: 2;
 	}
@@ -134,32 +147,16 @@
 
 	:global(.i-logo.fade) img {
 		animation: fadeOut 2s;
-		-webkit-animation: fadeOut 2s;
-		-moz-animation: fadeOut 2s;
-		-o-animation: fadeOut 2s;
-		-ms-animation: fadeOut 2s;
 	}
 	:global(.i-logo.fade) .i-letter {
 		animation: fadeIn 2s;
-		-webkit-animation: fadeIn 2s;
-		-moz-animation: fadeIn 2s;
-		-o-animation: fadeIn 2s;
-		-ms-animation: fadeIn 2s;
 	}
 
 	:global(.i-logo.fadeIn) img {
 		animation: fadeIn 2s;
-		-webkit-animation: fadeIn 2s;
-		-moz-animation: fadeIn 2s;
-		-o-animation: fadeIn 2s;
-		-ms-animation: fadeIn 2s;
 	}
 	:global(.i-logo.fadeIn) .i-letter {
 		animation: fadeOut 2s;
-		-webkit-animation: fadeOut 2s;
-		-moz-animation: fadeOut 2s;
-		-o-animation: fadeOut 2s;
-		-ms-animation: fadeOut 2s;
 	}
 	:global(.i-logo.hide) img {
 		opacity: 0;
@@ -171,38 +168,7 @@
 		}
 		100% {
 			opacity: 0;
-		}
-	}
-	@-webkit-keyframes fadeOut {
-		0% {
-			opacity: 1;
-		}
-		100% {
-			opacity: 0;
-		}
-	}
-	@-moz-keyframes fadeOut {
-		0% {
-			opacity: 1;
-		}
-		100% {
-			opacity: 0;
-		}
-	}
-	@-o-keyframes fadeOut {
-		0% {
-			opacity: 1;
-		}
-		100% {
-			opacity: 0;
-		}
-	}
-	@-ms-keyframes fadeOut {
-		0% {
-			opacity: 1;
-		}
-		100% {
-			opacity: 0;
+			display: none;
 		}
 	}
 	@keyframes fadeIn {
@@ -211,38 +177,7 @@
 		}
 		100% {
 			opacity: 1;
-		}
-	}
-	@-webkit-keyframes fadeIn {
-		0% {
-			opacity: 0;
-		}
-		100% {
-			opacity: 1;
-		}
-	}
-	@-moz-keyframes fadeIn {
-		0% {
-			opacity: 0;
-		}
-		100% {
-			opacity: 1;
-		}
-	}
-	@-o-keyframes fadeIn {
-		0% {
-			opacity: 0;
-		}
-		100% {
-			opacity: 1;
-		}
-	}
-	@-ms-keyframes fadeIn {
-		0% {
-			opacity: 0;
-		}
-		100% {
-			opacity: 1;
+			display: none;
 		}
 	}
 </style>
