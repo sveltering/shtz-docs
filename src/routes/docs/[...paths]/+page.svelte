@@ -2,7 +2,6 @@
 	import { afterNavigate } from '$app/navigation';
 	import { page } from '$app/stores';
 	import Code from '$lib/code.svelte';
-	import Filenav from '$lib/filenav.svelte';
 	import Header from '$lib/header.svelte';
 	import Navigator from '$lib/navigator.svelte';
 	import type { PageData } from './$types';
@@ -39,21 +38,19 @@
 	<h1>Warnings: check console for error.</h1>
 {/if}
 
-<div style="max-width:100%;">
-	<div class="container">
-		<div class="column">
-			<Navigator {allPaths} wayToPath={[...paths]} {baseHref} />
-		</div>
-		<div class="column content">
-			{@html content}
-		</div>
-
-		{#if path.codeFiles}
-			<div class="column">
-				<Code {path} />
-			</div>
-		{/if}
+<div class="container">
+	<div class="column">
+		<Navigator {allPaths} wayToPath={[...paths]} {baseHref} />
 	</div>
+	<div class="column content">
+		{@html content}
+	</div>
+
+	{#if path.codeFiles}
+		<div class="column">
+			<Code {path} />
+		</div>
+	{/if}
 </div>
 
 <style>
@@ -71,5 +68,6 @@
 		padding: 10px;
 	}
 	.container .column.content {
+		flex-grow: 1;
 	}
 </style>

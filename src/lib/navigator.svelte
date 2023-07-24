@@ -47,6 +47,11 @@
 		color: #fff;
 	}
 
+	.dir .name.current {
+		color: rgb(182, 64, 22);
+		text-decoration: underline;
+		text-underline-offset: 0.3rem;
+	}
 	.dir.first > .name {
 		display: block;
 		text-transform: uppercase;

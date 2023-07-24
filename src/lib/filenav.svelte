@@ -21,9 +21,7 @@
 		dispatch('loadFile', event.detail);
 	}
 	function toggle(e: MouseEvent) {
-		console.log(e);
 		const element = e.currentTarget.parentElement as Element;
-		console.log(element);
 		if (element.classList.contains('hide-files')) {
 			element.classList.remove('hide-files');
 		} else {
@@ -44,8 +42,7 @@
 		>
 			<span class="name">
 				<span class="arrow" />
-				<i class="icon {fileTypeIcon}-icon" />
-				{file.file}
+				<i class="icon {fileTypeIcon}-icon" />{file.file}
 			</span>
 		</span>
 	{/if}
@@ -73,7 +70,7 @@
 
 <style>
 	.icon:before {
-		width: 12px;
+		width: 20px;
 		font-size: 13px;
 	}
 	.dir {
@@ -113,5 +110,8 @@
 	}
 	.name {
 		color: #fff;
+	}
+	.file-name {
+		white-space: nowrap;
 	}
 </style>

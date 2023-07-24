@@ -1,12 +1,17 @@
 <script lang="ts">
-	export let path;
+	import Prism from 'prismjs';
+	import 'prismjs/components/prism-bash.js';
+	import 'prismjs/components/prism-diff.js';
+	import 'prismjs/components/prism-typescript.js';
+	import 'prism-svelte';
 	import Filenav from '$lib/filenav.svelte';
+
+	export let path;
 
 	let openFiles: any = {};
 	let currentId: string = undefined as any as string;
 	function loadFile(event: any) {
 		const id = event.detail.id;
-		console.log(event.detail);
 		if (openFiles?.[id]) {
 			currentId = id;
 			return;
@@ -54,27 +59,36 @@
 						{#if index === details.filePath.length - 1}
 							{@const filetype = path.split('.').pop()}
 							{@const fileTypeIcon = fileTypeAliases?.[filetype] || filetype}
-							<i class="icon {fileTypeIcon}-icon" />
-							{path}
+							<i class="icon {fileTypeIcon}-icon" />{path}
 						{:else}
-							{path}&nbsp &gt; &nbsp;
+							{path}&nbsp&gt;&nbsp;
 						{/if}
 					{/each}
 				</div>
 				<div class="code">
-					{details.code}
+					<pre><code
+							>{@html Prism.highlight(details.code, Prism.languages['svelte'], 'svelte')}</code
+						></pre>
 				</div>
 			</div>
 		{/each}
+		{#if !Object.keys(openFiles).length}
+			<div class="code-outer show">
+				<div class="code">
+					<pre><code>Nothing Open</code></pre>
+				</div>
+			</div>
+		{/if}
 	</div>
 </div>
 
 <style>
 	.nav {
 		background: #111;
+		min-width: 250px;
 	}
 	.icon:before {
-		width: 14px;
+		width: 20px;
 		font-size: 13px;
 	}
 	.code-container {
@@ -83,9 +97,12 @@
 		justify-content: space-between;
 		align-content: flex-start;
 		align-items: flex-start;
+		font-family: monospace;
+		tab-size: 40px;
 	}
 	.code-container .code-column {
 		padding: 10px;
+		align-self: stretch;
 	}
 	.code-container .code-column.content {
 		flex: auto;
@@ -94,16 +111,23 @@
 	}
 	.code-container .code-column.content .code-outer {
 		display: none;
-		padding: 10px;
+		/* padding: 10px; */
+		min-width: 500px;
+		line-height: 1.3rem;
 	}
 	.code-container .code-column.content .code-outer .navigate {
-		margin: 0 0 10px 0;
+		border-bottom: 1px solid #555;
+		padding: 10px;
+	}
+	.code-container .code-column.content .code-outer .code {
+		padding: 10px;
 	}
 	.code-container .code-column.content .code-outer.show {
 		display: block;
 	}
 	.open-files {
 		overflow-x: auto;
+		white-space: nowrap;
 	}
 	.open-files {
 		background: #111;
@@ -113,6 +137,12 @@
 		padding: 10px 20px;
 		cursor: pointer;
 		border-top: 1px solid transparent;
+		-webkit-user-select: none; /* Safari */
+		-moz-user-select: none; /* Firefox */
+		-ms-user-select: none; /* IE10+/Edge */
+		user-select: none; /* Standard */
+
+		white-space: nowrap;
 	}
 	.open-files .open-file.open {
 		background: #333;
@@ -122,7 +152,7 @@
 		font-weight: 600;
 		margin-left: 5px;
 		color: #fff;
-		font-size: 0.8rem;
+		font-size: 1rem;
 		padding: 0 4px;
 	}
 	.open-files .open-file .close-file:hover {

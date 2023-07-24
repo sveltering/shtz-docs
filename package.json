@@ -19,6 +19,7 @@
 		"@sveltejs/adapter-auto": "^2.0.0",
 		"@sveltejs/kit": "^1.20.4",
 		"@types/marked": "^5.0.1",
+		"@types/prismjs": "^1.26.0",
 		"@typescript-eslint/eslint-plugin": "^5.45.0",
 		"@typescript-eslint/parser": "^5.45.0",
 		"eslint": "^8.28.0",
@@ -38,6 +39,8 @@
 		"@exuanbo/file-icons-js": "^3.3.0",
 		"dompurify": "^3.0.5",
 		"jsdom": "^22.1.0",
-		"marked": "^5.1.1"
+		"marked": "^5.1.1",
+		"prism-svelte": "^0.5.0",
+		"prismjs": "^1.29.0"
 	}
 }
