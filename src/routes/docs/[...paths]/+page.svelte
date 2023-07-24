@@ -39,7 +39,7 @@
 {/if}
 
 <div class="container">
-	<div class="column">
+	<div class="column nav">
 		<Navigator {allPaths} wayToPath={[...paths]} {baseHref} />
 	</div>
 	<div class="content column">
@@ -70,6 +70,10 @@
 	.container .column {
 		padding: 10px;
 	}
+	.container .column.nav {
+		white-space: nowrap;
+		display: table;
+	}
 	.container .column.content {
 		flex-grow: 1;
 		display: inline-flex;
@@ -79,12 +83,12 @@
 		align-items: flex-start;
 	}
 	.container .column.content .md {
-		min-width: 500px;
+		min-width: 550px;
 	}
 	.container .column.content .code {
 		width: 100%;
 	}
-	@media (max-width: 1500px) {
+	@media (max-width: 1400px) {
 		.container .column.content {
 			flex-direction: column;
 			align-items: initial;
@@ -92,10 +96,6 @@
 		.container .column.content > div {
 			flex-grow: 1;
 			margin-bottom: 30px;
-		}
-	}
-	@media (min-width: 1400px) {
-		.container .column.content > div {
 		}
 	}
 </style>

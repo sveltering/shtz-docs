@@ -103,6 +103,7 @@
 	.code-container .code-column {
 		padding: 10px;
 		align-self: stretch;
+		display: table;
 	}
 	.code-container .code-column.content {
 		flex: auto;
@@ -122,10 +123,6 @@
 	}
 	.code-container .code-column.content .code-outer.show {
 		display: block;
-	}
-	.open-files {
-		overflow-x: auto;
-		white-space: nowrap;
 	}
 	.open-files {
 		background: #111;
