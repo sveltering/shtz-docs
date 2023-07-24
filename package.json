@@ -36,11 +36,17 @@
 	},
 	"type": "module",
 	"dependencies": {
+		"@babel/runtime": "^7.22.6",
+		"@codemirror/lang-css": "^6.2.0",
+		"@codemirror/lang-html": "^6.4.5",
+		"@codemirror/lang-javascript": "^6.1.9",
+		"@codemirror/state": "^6.2.1",
 		"@exuanbo/file-icons-js": "^3.3.0",
+		"@replit/codemirror-lang-svelte": "^6.0.0",
+		"@uiw/codemirror-theme-vscode": "^4.21.8",
+		"codemirror": "^6.0.1",
 		"dompurify": "^3.0.5",
 		"jsdom": "^22.1.0",
-		"marked": "^5.1.1",
-		"prism-svelte": "^0.5.0",
-		"prismjs": "^1.29.0"
+		"marked": "^5.1.1"
 	}
 }

@@ -20,6 +20,12 @@
 
 	afterNavigate(function () {
 		document.title = meta?.title || 'SHTZ docs';
+		if (
+			typeof window !== 'undefined' &&
+			typeof window.document === 'object' &&
+			typeof Prism !== 'undefined'
+		) {
+		}
 	});
 </script>
 

@@ -1,10 +1,6 @@
 <script lang="ts">
-	import Prism from 'prismjs';
-	import 'prismjs/components/prism-bash.js';
-	import 'prismjs/components/prism-diff.js';
-	import 'prismjs/components/prism-typescript.js';
-	import 'prism-svelte';
 	import Filenav from '$lib/filenav.svelte';
+	import CodeAdd from './code-add.svelte';
 
 	export let path;
 
@@ -67,9 +63,7 @@
 					{/each}
 				</div>
 				<div class="code">
-					<pre><code
-							>{@html Prism.highlight(details.code, Prism.languages['svelte'], 'svelte')}</code
-						></pre>
+					<CodeAdd {details} />
 				</div>
 			</div>
 		{/each}
@@ -107,7 +101,7 @@
 	}
 	.code-container .code-column.content {
 		flex: auto;
-		background: #333;
+		background: #1e1e1e;
 		padding: 0;
 	}
 	.code-container .code-column.content .code-outer {
@@ -139,22 +133,25 @@
 
 		white-space: nowrap;
 	}
+	.open-files .open-file:not(.open):hover {
+		background: #2a2a2a;
+		border-top: 1px solid rgb(112, 112, 112);
+	}
 	.open-files .open-file.open {
-		background: #333;
+		background: #1e1e1e;
 		border-top: 1px solid rgb(13, 13, 204);
 	}
 	.open-files .open-file .close-file {
-		font-weight: 600;
 		margin-left: 5px;
 		color: #fff;
-		font-size: 1rem;
 		padding: 0 4px;
-	}
-	.open-files .open-file .close-file:hover {
-		background: #333;
+		font-family: 'Nunito';
+		font-weight: 100;
+		font-size: 0.8rem;
 		border-radius: 3px;
 	}
-	.open-files .open-file.open .close-file:hover {
-		background: #111;
+
+	.open-files .open-file .close-file:hover {
+		background: #666;
 	}
 </style>

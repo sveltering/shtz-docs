@@ -7,14 +7,15 @@
 	$: currentLevel = allPaths?.paths || [];
 </script>
 
-{#each Object.entries(currentLevel) as [slug, paths]}
+{#each Object.entries(currentLevel) as [slug, paths], index}
 	{@const isCurrent = currentSlug === slug && !wayToPath.length}
+	{@const displayIndex = index + 1}
 
 	<div class="dir" class:first>
 		{#if isCurrent}
-			<span class="name current">{paths.title}</span>
+			<span class="name current">{displayIndex}. {paths.title}</span>
 		{:else}
-			<a href={baseHref + '/' + slug} class="name"><span>{paths.title}</span></a>
+			<a href={baseHref + '/' + slug} class="name"><span>{displayIndex}. {paths.title}</span></a>
 		{/if}
 		{#if Object.keys(paths?.paths || {}).length}
 			<div class="childDir">
