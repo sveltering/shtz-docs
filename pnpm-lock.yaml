@@ -5,6 +5,9 @@ settings:
   excludeLinksFromLockfile: false
 
 dependencies:
+  '@exuanbo/file-icons-js':
+    specifier: ^3.3.0
+    version: 3.3.0
   dompurify:
     specifier: ^3.0.5
     version: 3.0.5
@@ -317,6 +320,10 @@ packages:
     resolution: {integrity: sha512-Ag+9YM4ocKQx9AarydN0KY2j0ErMHNIocPDrVo8zAE44xLTjEtz81OdR68/cydGtk6m6jDb5Za3r2useMzYmSw==}
     engines: {node: ^12.22.0 || ^14.17.0 || >=16.0.0}
     dev: true
+
+  /@exuanbo/file-icons-js@3.3.0:
+    resolution: {integrity: sha512-utn/kkeIhbfxJtn9ZDGXL1p8BtyUlgoDls3xGYIxk1FgNnMx6CqN2fBYeeAYIPL1O4nexWZ/2thssNwIMUqHKA==}
+    dev: false
 
   /@humanwhocodes/config-array@0.11.10:
     resolution: {integrity: sha512-KVVjQmNUepDVGXNuoRRdmmEjruj0KfiGSbS8LVc12LMsWDQzRXJ0qdhN8L8uUigKpfEHRhlaQFY0ib1tnUbNeQ==}

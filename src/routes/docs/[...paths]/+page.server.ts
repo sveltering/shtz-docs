@@ -168,12 +168,12 @@ async function getTxtFilesRecursive(path: string, startPath = '') {
 			}
 			if (dir.name.slice(-4) === '.txt') {
 				const filePath = startPath + '/' + dir.name;
-				const filePathSplit = filePath.split('/');
+				const filePathSplit = filePath.slice(0, -4).split('/');
 				filePathSplit.shift();
 				return {
 					file: dir.name.slice(0, -4),
 					filePath: filePathSplit,
-					id: filePath.replace(/ /g, '-').replace(/[^\w-]+/g, '-')
+					id: 'id' + filePath.replace(/ /g, '-').replace(/[^\w-]+/g, '-')
 				};
 			}
 		})

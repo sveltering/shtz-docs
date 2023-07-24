@@ -74,6 +74,7 @@
 <style>
 	.navbar .inner {
 		max-width: 1000px;
+		width: 100%;
 		margin: 0 auto;
 		padding: 10px;
 	}
@@ -168,7 +169,6 @@
 		}
 		100% {
 			opacity: 0;
-			display: none;
 		}
 	}
 	@keyframes fadeIn {
@@ -177,7 +177,6 @@
 		}
 		100% {
 			opacity: 1;
-			display: none;
 		}
 	}
 </style>

@@ -38,25 +38,30 @@
 {#if warnings?.length}
 	<h1>Warnings: check console for error.</h1>
 {/if}
-<div class="container">
-	<div class="column">
-		<Navigator {allPaths} wayToPath={[...paths]} {baseHref} />
-	</div>
-	<div class="column content">
-		{@html content}
-	</div>
 
-	{#if path.codeFiles}
+<div style="max-width:100%;">
+	<div class="container">
 		<div class="column">
-			<Code {path} />
+			<Navigator {allPaths} wayToPath={[...paths]} {baseHref} />
 		</div>
-	{/if}
+		<div class="column content">
+			{@html content}
+		</div>
+
+		{#if path.codeFiles}
+			<div class="column">
+				<Code {path} />
+			</div>
+		{/if}
+	</div>
 </div>
 
 <style>
 	.container {
+		min-width: 0;
+		min-width: 100%;
 		padding: 10px;
-		display: flex;
+		display: inline-flex;
 		flex-direction: row;
 		justify-content: space-between;
 		align-content: flex-start;
@@ -66,6 +71,5 @@
 		padding: 10px;
 	}
 	.container .column.content {
-		flex: auto;
 	}
 </style>

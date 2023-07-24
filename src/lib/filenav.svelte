@@ -30,10 +30,13 @@
 			element.classList.add('hide-files');
 		}
 	}
+	const fileTypeAliases = { html: 'html5' };
 </script>
 
 {#each codeFiles as file}
 	{#if file?.file}
+		{@const filetype = file.file.split('.').pop()}
+		{@const fileTypeIcon = fileTypeAliases?.[filetype] || filetype}
 		<!-- svelte-ignore a11y-no-static-element-interactions -->
 		<span
 			class="file-name name-outer"
@@ -41,6 +44,7 @@
 		>
 			<span class="name">
 				<span class="arrow" />
+				<i class="icon {fileTypeIcon}-icon" />
 				{file.file}
 			</span>
 		</span>
@@ -68,6 +72,10 @@
 {/each}
 
 <style>
+	.icon:before {
+		width: 12px;
+		font-size: 13px;
+	}
 	.dir {
 		margin-left: 5px;
 	}
@@ -86,6 +94,7 @@
 		display: inline-block;
 		transform: rotate(90deg);
 		color: #aaa;
+		font-weight: 300;
 	}
 	.dir.hide-files .dir-name::before {
 		transform: rotate(0deg);
