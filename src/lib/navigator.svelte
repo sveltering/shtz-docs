@@ -1,22 +1,29 @@
 <script lang="ts">
-	export let wayToPath: any, allPaths: any, baseHref: any;
+	export let wayToPath: any,
+		allPaths: any,
+		baseHref: any,
+		first: boolean = true;
 	$: currentSlug = wayToPath?.shift();
 	$: currentLevel = allPaths?.paths || [];
 </script>
 
 {#each Object.entries(currentLevel) as [slug, paths]}
-	{@const dir = allPaths.paths[slug]}
-	{@const isCurrent = currentSlug === slug}
+	{@const isCurrent = currentSlug === slug && !wayToPath.length}
 
-	<div class="dir">
+	<div class="dir" class:first>
 		{#if isCurrent}
-			<span class="name current">{dir.title}</span>
+			<span class="name current">{paths.title}</span>
 		{:else}
-			<a href={baseHref + '/' + slug}><span class="name">{dir.title}</span></a>
+			<a href={baseHref + '/' + slug} class="name"><span>{paths.title}</span></a>
 		{/if}
-		{#if Object.keys(dir?.paths || {}).length}
+		{#if Object.keys(paths?.paths || {}).length}
 			<div class="childDir">
-				<svelte:self allPaths={dir} wayToPath={[...wayToPath]} baseHref={baseHref + '/' + slug} />
+				<svelte:self
+					allPaths={paths}
+					wayToPath={[...wayToPath]}
+					baseHref={baseHref + '/' + slug}
+					first={false}
+				/>
 			</div>
 		{/if}
 	</div>
@@ -26,7 +33,25 @@
 	.dir .name {
 		font-weight: bold;
 	}
-	.childDir {
+	.dir:not(.first) .childDir {
 		margin-left: 10px;
+	}
+
+	.dir.first {
+		margin-bottom: 20px;
+	}
+
+	.dir.first .name {
+		letter-spacing: 0.1rem;
+		font-weight: 200;
+		color: #fff;
+	}
+
+	.dir.first > .name {
+		display: block;
+		text-transform: uppercase;
+		letter-spacing: 0.2rem;
+		font-weight: 700;
+		margin: 10px 0;
 	}
 </style>

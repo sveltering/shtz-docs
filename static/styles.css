@@ -1,0 +1,18 @@
+html,
+body {
+  font-family: Nunito, Arial, sans-serif;
+  font-size: 16px;
+  font-weight: 100;
+  background-color: #222;
+  color: #aeaeae
+}
+
+a {
+  text-decoration: none;
+  color: #c55936;
+}
+
+a:hover {
+  text-decoration: underline;
+  text-underline-offset: 0.2rem;
+}

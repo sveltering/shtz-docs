@@ -159,24 +159,37 @@ async function getTxtFiles(path: string) {
 	return undefined;
 }
 
-async function getTxtFilesRecursive(path: string) {
+async function getTxtFilesRecursive(path: string, startPath = '') {
 	const files = (await readdir(path, { withFileTypes: true }))
 		.filter((dir) => dir.isDirectory() || dir.isFile())
-		.map((dir) => (dir.isDirectory() ? { dir: dir.name } : { file: dir.name }));
+		.map((dir) => {
+			if (dir.isDirectory()) {
+				return { dir: dir.name };
+			}
+			if (dir.name.slice(-4) === '.txt') {
+				return {
+					file: dir.name.slice(0, -4),
+					id: (startPath + '/' + dir.name)
+						.toLowerCase()
+						.replace(/ /g, '-')
+						.replace(/[^\w-]+/g, '-')
+				};
+			}
+		});
 
 	for (let i = 0, iLen = files.length; i < iLen; i++) {
 		const file = files[i] as any;
 		if (file.file) {
 			let fileContent;
 			try {
-				fileContent = (await readFile(path + '/' + file.file)).toString();
+				fileContent = (await readFile(path + '/' + file.file + '.txt')).toString();
 			} catch (e) {
 				fileContent = 'Error loading file content';
 			}
 			file.content = fileContent;
 		}
 		if (file.dir) {
-			file.files = await getTxtFilesRecursive(path + '/' + file.dir);
+			file.files = await getTxtFilesRecursive(path + '/' + file.dir, startPath + '/' + file.dir);
 		}
 	}
 	return files;
