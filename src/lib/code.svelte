@@ -18,7 +18,6 @@
 	const fileTypeAliases = { html: 'html5' };
 </script>
 
-<h1>The code</h1>
 <div class="code-container">
 	<div class="code-column nav">
 		<Filenav codeFiles={path.codeFiles} on:loadFile={loadFile} />
@@ -31,7 +30,11 @@
 				{@const fileTypeIcon = fileTypeAliases?.[filetype] || filetype}
 				<!-- svelte-ignore a11y-click-events-have-key-events -->
 				<!-- svelte-ignore a11y-no-static-element-interactions -->
-				<div class="open-file" on:click={() => (currentId = id)} class:open={id === currentId}>
+				<div
+					class="open-file"
+					on:click={() => (currentId = id)}
+					class:open={id === currentId}
+				>
 					<i class="icon {fileTypeIcon}-icon" />{details.fileName}
 					<span
 						class="close-file"
@@ -93,6 +96,7 @@
 		align-items: flex-start;
 		font-family: monospace;
 		tab-size: 40px;
+		height: -webkit-fill-available;
 	}
 	.code-container .code-column {
 		padding: 10px;

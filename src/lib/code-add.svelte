@@ -6,8 +6,8 @@
 	import { javascript } from '@codemirror/lang-javascript';
 	import { html } from '@codemirror/lang-html';
 	import { css } from '@codemirror/lang-css';
-
 	import { json } from '@codemirror/lang-json';
+
 	import { vscodeDarkInit } from '@uiw/codemirror-theme-vscode';
 
 	import { onMount } from 'svelte';
@@ -31,7 +31,8 @@
 				extensions: [
 					vscodeDarkInit(),
 					basicSetup,
-					fileType[details.fileName.split('.').pop()]
+					fileType[details.fileName.split('.').pop()],
+					EditorView.lineWrapping
 				]
 			});
 
