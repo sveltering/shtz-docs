@@ -43,12 +43,12 @@
 
 <style>
 	.end-links {
-		margin-top: 10px;
+		margin-top: 16px;
 		display: inline-flex;
 		gap: 10px;
 		justify-content: space-between;
 		border-top: 1px solid #333;
-		padding-top: 10px;
+		padding: 16px 0 6px 0;
 		min-width: 420px;
 		width: 100%;
 	}
@@ -70,7 +70,7 @@
 		font-size: 1.2rem;
 		font-weight: 600;
 	}
-
+	.end-link.first a,
 	.end-link a:hover {
 		color: rgb(182, 64, 22);
 	}
@@ -79,6 +79,9 @@
 		display: block;
 		font-size: 1rem;
 		color: #333;
+	}
+	.end-link.first a span {
+		color: #fff;
 	}
 	.end-link.next {
 		text-align: right;
