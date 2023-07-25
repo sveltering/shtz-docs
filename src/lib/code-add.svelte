@@ -1,31 +1,31 @@
 <script lang="ts">
 	import { basicSetup, EditorView } from 'codemirror';
 	import { EditorState } from '@codemirror/state';
-
 	import { svelte } from '@replit/codemirror-lang-svelte';
 	import { javascript } from '@codemirror/lang-javascript';
 	import { html } from '@codemirror/lang-html';
 	import { css } from '@codemirror/lang-css';
 	import { json } from '@codemirror/lang-json';
-
 	import { vscodeDarkInit } from '@uiw/codemirror-theme-vscode';
 
 	import { onMount } from 'svelte';
+	import { browser } from '$app/environment';
 
 	export let details;
 	export let codeEl;
 
-	onMount(function () {
-		if (typeof window !== 'undefined' && typeof window.document === 'object') {
-			const fileType = {
-				svelte: svelte(),
-				js: javascript(),
-				html: html(),
-				css: css(),
-				json: json()
-			};
-			fileType.ts = fileType.js;
-
+	if (browser) {
+		const fileType = {
+			svelte: svelte(),
+			js: javascript(),
+			html: html(),
+			css: css(),
+			json: json()
+		};
+		fileType.ts = fileType.js;
+		fileType.javascript = fileType.js;
+		fileType.typescript = fileType.js;
+		onMount(function () {
 			const state = EditorState.create({
 				doc: details.code,
 				extensions: [
@@ -35,13 +35,9 @@
 					EditorView.lineWrapping
 				]
 			});
-
-			new EditorView({
-				parent: codeEl,
-				state
-			});
-		}
-	});
+			new EditorView({ parent: codeEl, state });
+		});
+	}
 </script>
 
 <pre><code bind:this={codeEl} /></pre>

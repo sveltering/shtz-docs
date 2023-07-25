@@ -73,7 +73,11 @@
 		{#if !Object.keys(openFiles).length}
 			<div class="code-outer show">
 				<div class="code">
-					<pre><code>Nothing Open</code></pre>
+					<pre><code
+							><span style="padding:10px; display:inline-block"
+								>Nothing Open</span
+							></code
+						></pre>
 				</div>
 			</div>
 		{/if}
@@ -114,10 +118,10 @@
 	}
 	.code-container .code-column.content .code-outer .navigate {
 		border-bottom: 1px solid #555;
-		padding: 10px;
+		padding: 5px;
 	}
 	.code-container .code-column.content .code-outer .code {
-		padding: 10px;
+		/* padding: 10px; */
 	}
 	.code-container .code-column.content .code-outer.show {
 		display: block;

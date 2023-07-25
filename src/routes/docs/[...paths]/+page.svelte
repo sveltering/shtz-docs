@@ -1,7 +1,11 @@
 <script lang="ts">
-	import { basicSetup, EditorView } from 'codemirror';
+	import { minimalSetup, EditorView } from 'codemirror';
 	import { EditorState } from '@codemirror/state';
-
+	import { svelte } from '@replit/codemirror-lang-svelte';
+	import { javascript } from '@codemirror/lang-javascript';
+	import { html } from '@codemirror/lang-html';
+	import { css } from '@codemirror/lang-css';
+	import { json } from '@codemirror/lang-json';
 	import { vscodeDarkInit } from '@uiw/codemirror-theme-vscode';
 
 	import { afterNavigate } from '$app/navigation';
@@ -10,15 +14,16 @@
 	import Header from '$lib/header.svelte';
 	import Navigator from '$lib/navigator.svelte';
 	import type { PageData } from './$types';
-	import { onMount } from 'svelte';
 	import { browser } from '$app/environment';
+	import FooterNavigator from '$lib/footer-navigator.svelte';
 
 	export let data: PageData;
 
 	let mdEl;
 	let codeEl;
 
-	$: ({ warnings, meta, content, allPaths, paths, path } = data);
+	let { warnings, meta, content, allPaths, paths, path } = data;
+	$: ({ warnings, meta, content, paths, path } = data);
 
 	if (warnings?.length) {
 		for (let i = 0, iLen = warnings.length; i < iLen; i++) {
@@ -28,41 +33,73 @@
 
 	const baseHref = $page.url.pathname.split('/').slice(0, 3).join('/');
 
-	afterNavigate(function () {
-		if (!browser) {
-			return;
-		}
-		document.title = meta?.title || 'SHTZ docs';
-		if (!mdEl) {
-			return;
-		}
-		console.log(codeEl);
-		const codes = mdEl.querySelectorAll('code');
-		for (let i = 0, iLen = codes.length; i < iLen; i++) {
-			const text = codes[i].innerText;
-			codes[i].innerHTML = '';
+	if (browser) {
+		const fileType = {
+			svelte: svelte(),
+			js: javascript(),
+			html: html(),
+			css: css(),
+			json: json()
+		};
+		fileType.ts = fileType.js;
+		fileType.javascript = fileType.js;
+		fileType.typescript = fileType.js;
 
-			const state = EditorState.create({
-				doc: text,
-				extensions: [vscodeDarkInit(), basicSetup, EditorView.lineWrapping]
-			});
+		afterNavigate(function () {
+			window.document.title = meta?.title || 'SHTZ docs';
+			if (!mdEl) {
+				return;
+			}
+			const codes = mdEl.querySelectorAll('code');
+			for (let i = 0, iLen = codes.length; i < iLen; i++) {
+				const mdCodeEl = codes[i];
+				const codeText = mdCodeEl.innerText;
 
-			new EditorView({
-				parent: codes[i],
-				state
-			});
-		}
-		resizeCodeElHeight();
-	});
+				const classNameSplit = mdCodeEl.className.split(/(language-|\s+)/);
+				const langClassIndex = classNameSplit.indexOf('language-');
+				const langKeyIndex =
+					langClassIndex === -1 ? undefined : langClassIndex + 1;
+				const language = fileType?.[classNameSplit?.[langKeyIndex]];
+				mdCodeEl.innerHTML = '';
+				const extensions = [
+					vscodeDarkInit(),
+					minimalSetup,
+					EditorView.lineWrapping
+				];
+				if (language) {
+					extensions.push(language);
+				}
+				const state = EditorState.create({
+					doc: codeText,
+					extensions
+				});
+				const view = new EditorView({ parent: mdCodeEl, state });
+			}
+			resizeCodeElHeight();
+		});
+	}
 	function resizeCodeElHeight() {
 		if (!codeEl) {
 			return;
 		}
-		// codeEl.style.height =
-		// 	window.innerHeight - codeEl.getBoundingClientRect().top + 'px';
-
 		codeEl.style.height = window.innerHeight + 'px';
 	}
+
+	const pathsStore: any = {};
+	let pathsInOrder: any[] = [];
+
+	function loadPaths(paths) {
+		for (let key in paths) {
+			pathsInOrder.push(paths[key].url);
+			pathsStore[paths[key].url] = {
+				url: paths[key].url,
+				title: paths[key].title,
+				first: paths[key].isFirst
+			};
+			loadPaths(paths[key].paths);
+		}
+	}
+	loadPaths(allPaths?.paths);
 </script>
 
 <svelte:window on:resize={resizeCodeElHeight} />
@@ -87,8 +124,14 @@
 		<Navigator {allPaths} wayToPath={[...paths]} {baseHref} />
 	</div>
 	<div class="content column">
-		<div class="md" bind:this={mdEl}>
+		<div class="md markdown-body" bind:this={mdEl}>
 			{@html content}
+			<FooterNavigator
+				paths={[...paths]}
+				{pathsStore}
+				{pathsInOrder}
+				{baseHref}
+			/>
 		</div>
 
 		{#if path.codeFiles}
@@ -104,7 +147,7 @@
 		min-width: 0;
 		max-width: 100%;
 		width: 100%;
-		padding: 10px 10px 0 10px;
+		padding: 5px 5px 0 5px;
 		display: inline-flex;
 		flex-direction: row;
 		justify-content: space-between;
@@ -112,7 +155,7 @@
 		align-items: flex-start;
 	}
 	.container .column {
-		padding: 10px 10px 0 10px;
+		padding: 5px 5px 0 5px;
 	}
 	.container .column.nav {
 		white-space: nowrap;
@@ -127,8 +170,9 @@
 		align-items: flex-start;
 	}
 	.container .column.content .md {
-		min-width: 600px;
+		max-width: 600px;
 		padding: 10px;
+		margin-right: 10px;
 	}
 	.container .column.content .code {
 		background: #111;
@@ -147,6 +191,9 @@
 			margin-bottom: 30px;
 		}
 
+		.container .column.content .md {
+			margin-right: 0px;
+		}
 		.container .column.content .code {
 			height: auto !important;
 			overflow-x: initial;

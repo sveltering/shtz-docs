@@ -2,12 +2,17 @@
 title: Installing dependencies
 desc: Installing required dependencies
 ---
-# Install
+# Install shtz
+
+### Install svelte
+[Instructions for installing svelte on the svelte website](https://svelte.dev/docs/introduction#start-a-new-project)
+
+### Install dependencies
 
 ```bash
-# create a new project in the current directory
-npm create svelte@latest
-
-# create a new project in my-app
-npm create svelte@latest my-app
+# Zod is optional but recommended for validation
+npm install @trpc/server @trpc/client @sveltering/shtz zod
 ```
+[More on the tRPC website](https://trpc.io/)
+
+[More on the Zod website](https://zod.dev/)

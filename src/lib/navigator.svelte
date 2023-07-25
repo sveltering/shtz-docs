@@ -15,7 +15,9 @@
 		{#if isCurrent}
 			<span class="name current">{displayIndex}. {paths.title}</span>
 		{:else}
-			<a href={baseHref + '/' + slug} class="name"><span>{displayIndex}. {paths.title}</span></a>
+			<a href={baseHref + '/' + slug} class="name"
+				><span>{displayIndex}. {paths.title}</span></a
+			>
 		{/if}
 		{#if Object.keys(paths?.paths || {}).length}
 			<div class="childDir">
@@ -31,6 +33,9 @@
 {/each}
 
 <style>
+	.dir {
+		line-height: 1.3rem;
+	}
 	.dir .name {
 		font-weight: bold;
 	}

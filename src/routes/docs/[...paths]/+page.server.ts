@@ -20,7 +20,7 @@ let allPaths: any = undefined;
 export const load = (async (event) => {
 	const paths = event.params.paths.split('/');
 	if (dev || allPaths === undefined) {
-		allPaths = await makePaths(docsPath + '/' + paths.shift(), true);
+		allPaths = await makePaths(docsPath + '/' + paths.shift(), '', true);
 	}
 	const path = getCurrentPath(paths);
 	const meta: { [key: string]: string } = {};
@@ -104,11 +104,17 @@ function getCurrentPath(paths: string[]) {
 	return current;
 }
 
-async function makePaths(path: string, firstPath: boolean = false) {
+async function makePaths(
+	path: string,
+	lastSlug: string,
+	firstPath: boolean = false
+) {
 	const directories = (await readdir(path, { withFileTypes: true }))
 		.filter((dir) => dir.isDirectory())
 		.map((dir, index) => dir.name)
-		.sort(new Intl.Collator('en', { numeric: true, sensitivity: 'accent' }).compare);
+		.sort(
+			new Intl.Collator('en', { numeric: true, sensitivity: 'accent' }).compare
+		);
 
 	const returnPaths: any = {};
 
@@ -123,21 +129,23 @@ async function makePaths(path: string, firstPath: boolean = false) {
 
 		const { slug, title } = pathAndTitle(dirName);
 
-		if (!firstPath) {
-			if (directories?.[i - 1]) {
-				prevPath = pathAndTitle(directories[i - 1]);
-			}
-			if (directories?.[i + 1]) {
-				nextPath = pathAndTitle(directories[i + 1]);
-			}
+		// if (!firstPath) {
+		if (directories?.[i - 1]) {
+			prevPath = pathAndTitle(directories[i - 1]);
 		}
+		if (directories?.[i + 1]) {
+			nextPath = pathAndTitle(directories[i + 1]);
+		}
+		// }
 
 		returnPaths[slug] = {
 			path: fullPath,
-			paths: await makePaths(fullPath),
+			paths: await makePaths(fullPath, lastSlug + '/' + slug),
 			codeFiles: await getTxtFiles(fullPath),
 			title,
 			slug,
+			url: lastSlug + '/' + slug,
+			isFirst: firstPath,
 			...{ prevPath },
 			...{ nextPath }
 		};
@@ -189,14 +197,19 @@ async function getTxtFilesRecursive(path: string, startPath = '') {
 		if (file.file) {
 			let fileContent;
 			try {
-				fileContent = (await readFile(path + '/' + file.file + '.txt')).toString();
+				fileContent = (
+					await readFile(path + '/' + file.file + '.txt')
+				).toString();
 			} catch (e) {
 				fileContent = 'Error loading file content';
 			}
 			file.content = fileContent;
 		}
 		if (file.dir) {
-			file.files = await getTxtFilesRecursive(path + '/' + file.dir, startPath + '/' + file.dir);
+			file.files = await getTxtFilesRecursive(
+				path + '/' + file.dir,
+				startPath + '/' + file.dir
+			);
 		}
 	}
 	return files;
@@ -204,7 +217,9 @@ async function getTxtFilesRecursive(path: string, startPath = '') {
 
 async function getFiles(path: string) {
 	const files = (await readdir(path, { withFileTypes: true }))
-		.filter((dir) => dir.isFile() && ['readme.md'].includes(dir.name.toLowerCase()))
+		.filter(
+			(dir) => dir.isFile() && ['readme.md'].includes(dir.name.toLowerCase())
+		)
 		.map((dir) => dir.name);
 
 	const returnPaths: any = {};
