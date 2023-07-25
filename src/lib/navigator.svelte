@@ -13,7 +13,14 @@
 
 	<div class="dir" class:first>
 		{#if isCurrent}
-			<span class="name current">{displayIndex}. {paths.title}</span>
+			{#if first}
+				<span class="name current">{paths.title}</span>
+			{:else}
+				<span class="name current">{displayIndex}. {paths.title}</span>
+			{/if}
+		{:else if first}
+			<a href={baseHref + '/' + slug} class="name"><span>{paths.title}</span></a
+			>
 		{:else}
 			<a href={baseHref + '/' + slug} class="name"
 				><span>{displayIndex}. {paths.title}</span></a
@@ -35,6 +42,7 @@
 <style>
 	.dir {
 		line-height: 1.3rem;
+		margin: 10px 0;
 	}
 	.dir .name {
 		font-weight: bold;
@@ -49,7 +57,7 @@
 
 	.dir.first .name {
 		letter-spacing: 0.1rem;
-		font-weight: 200;
+		font-weight: 400;
 		color: #fff;
 	}
 
@@ -62,7 +70,10 @@
 		display: block;
 		text-transform: uppercase;
 		letter-spacing: 0.2rem;
-		font-weight: 700;
-		margin: 10px 0;
+		font-weight: 900;
+		margin: 5px 0 10px 0;
+	}
+	.dir.first:first-of-type {
+		margin-top: 0;
 	}
 </style>
