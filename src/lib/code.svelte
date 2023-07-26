@@ -17,6 +17,8 @@
 		currentId = id;
 	}
 	const fileTypeAliases = { html: 'html5' };
+
+	$: openFileArray = Object.entries(openFiles);
 </script>
 
 <div class="code-container">
@@ -26,7 +28,7 @@
 
 	<div class="code-column content">
 		<div class="open-files">
-			{#each Object.entries(openFiles) as [id, details]}
+			{#each openFileArray as [id, details], index (id)}
 				{@const filetype = details.fileName.split('.').pop()}
 				{@const fileTypeIcon = fileTypeAliases?.[filetype] || filetype}
 				<!-- svelte-ignore a11y-click-events-have-key-events -->
@@ -53,7 +55,7 @@
 				</div>
 			{/each}
 		</div>
-		{#each Object.entries(openFiles) as [id, details]}
+		{#each openFileArray as [id, details], index (id)}
 			<div class="code-outer" class:show={details.id === currentId}>
 				<div class="navigate">
 					{#each details.filePath as path, index}
@@ -71,7 +73,7 @@
 				</div>
 			</div>
 		{/each}
-		{#if !Object.keys(openFiles).length}
+		{#if !openFileArray.length}
 			<div class="code-outer show">
 				<div class="code">
 					<pre><code
@@ -149,7 +151,7 @@
 	}
 	.open-files .open-file.open {
 		background: #1e1e1e;
-		border-top: 1px solid rgb(13, 13, 204);
+		border-top: 1px solid rgb(0 120 213);
 	}
 	.open-files .open-file .close-file {
 		margin-left: 5px;

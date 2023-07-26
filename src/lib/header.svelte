@@ -1,41 +1,29 @@
 <script lang="ts">
 	import { onDestroy, onMount } from 'svelte';
-
-	let navbar: Element;
 	let timeouts: any = [];
+
+	let logoEl: HTMLDivElement;
 	onMount(function () {
-		let logo = navbar.querySelector('.logo');
-		logo?.classList.add('animating');
-		let logos = navbar.querySelectorAll('.i-logo');
+		let logos = logoEl.querySelectorAll('.i-logo');
 		timeouts.push(
 			setTimeout(function () {
 				for (let i = 0, iLen = logos.length; i < iLen; i++) {
-					logos[i].classList.remove('noanim');
-					logos[i].classList.add('fade');
+					logos[i].classList.add('animate');
 				}
-			}, 500)
+			})
 		);
 		timeouts.push(
 			setTimeout(function () {
 				for (let i = 0, iLen = logos.length; i < iLen; i++) {
-					logos[i].classList.add('hide');
-				}
-			}, 2400)
-		);
-		timeouts.push(
-			setTimeout(function () {
-				for (let i = 0, iLen = logos.length; i < iLen; i++) {
-					logos[i].classList.add('fadeIn');
-					logos[i].classList.remove('hide');
+					logos[i].classList.add('animate2');
 				}
 			}, 3000)
 		);
 		timeouts.push(
 			setTimeout(function () {
 				for (let i = 0, iLen = logos.length; i < iLen; i++) {
-					logos[i].classList.add('noanim');
+					logos[i].classList.remove('animate', 'animate2');
 				}
-				logo?.classList.remove('animating');
 			}, 5000)
 		);
 	});
@@ -46,120 +34,111 @@
 	});
 </script>
 
-<div class="navbar" bind:this={navbar}>
-	<div class="inner">
-		<a href="/" class="logo-href">
-			<div class="logo">
-				<div class="i-logo noanim svelte">
-					<img src="/svelte-logo.svg" alt="svelte logo" />
-					<div class="i-letter">S</div>
+<div class="nav">
+	<a href="/">
+		<div class="logo" bind:this={logoEl}>
+			<div class="i-logos">
+				<div class="i-logo fade-svelte">
+					<img src="/svelte-logo.svg" alt="svelte logo" class="svelte" />
+					<div class="i-letter fade-svelte">S</div>
 				</div>
-				<div class="i-logo noanim waving">
+				<div class="i-logo fade-hello not-first">
 					<img src="/waving-logo.svg" alt="waving logo" />
-					<div class="i-letter">H</div>
+					<div class="i-letter fade-hello not-first">H</div>
 				</div>
-				<div class="i-logo noanim trpc">
+				<div class="i-logo fade-trpc not-first">
 					<img src="/trpc-logo.svg" alt="trpc logo" />
-					<div class="i-letter">T</div>
+					<div class="i-letter fade-trpc not-first">T</div>
 				</div>
-				<div class="i-logo noanim zod">
-					<img src="/zod-logo.svg" alt="zod logo" />
-					<div class="i-letter">Z</div>
+				<div class="i-logo fade-zod not-first">
+					<img src="/zod-logo.svg" alt="zod logo" class="zod" />
+					<div class="i-letter fade-zod not-first">Z</div>
 				</div>
 			</div>
-		</a>
-	</div>
+		</div>
+	</a>
 </div>
 
 <style>
-	.navbar .inner {
-		width: 100%;
-		margin: 0 auto;
+	.nav {
 		padding: 10px;
 	}
-	a.logo-href {
+	a {
 		text-decoration: none;
-		color: #eee;
 	}
-	.navbar .logo {
-		display: inline-block;
-		height: 60px;
-		margin-left: 25px;
-	}
-	.navbar .logo img {
-		height: 60px;
-		width: 60px;
-	}
-	.navbar .i-logo.zod img {
-		width: 70px;
-		height: 70px;
-	}
-	.logo .i-logo {
+	.logo {
 		position: relative;
 		display: inline-block;
-		height: 60px;
+	}
+	.i-logo {
+		position: relative;
+		top: 0;
+		display: inline-block;
 		width: 60px;
-		margin-left: -25px;
-	}
-	.logo .i-logo.zod {
-		margin-left: -30px;
-		/* z-index: 1; */
-	}
-	.navbar .logo:not(.animating) .i-logo:hover img {
-		animation: fadeOut 1s;
+		height: 60px;
 		animation-fill-mode: forwards;
+		vertical-align: top;
 	}
-	.navbar .logo:not(.animating) .i-logo:hover .i-letter {
-		animation: fadeIn 1s;
-		animation-fill-mode: forwards;
+	.i-logo.not-first {
+		margin-left: -20px;
 	}
-
-	/* .logo .i-logo.trpc {
-		z-index: 2;
-	}
-	.logo .i-logo.waving {
-		z-index: 3;
-	}
-	.logo .i-logo.svelte {
-		z-index: 4;
-	} */
-	.i-logo .i-letter {
-		position: absolute;
-		top: 50%;
-		left: 50%;
-		transform: translate(-50%, -50%);
-		font-size: 2rem;
+	.i-letter {
+		display: flex;
+		position: relative;
+		align-items: center;
+		justify-content: space-around;
 		z-index: 1;
+		width: 60px;
+		height: 60px;
+		animation-fill-mode: forwards;
+		font-size: 2rem;
 		font-weight: 500;
-	}
-	.i-logo.zod .i-letter {
-		margin-top: 10px;
-		margin-left: 5px;
-	}
-
-	:global(.i-logo.noanim) .i-letter {
+		color: #fff;
 		opacity: 0;
 	}
-	.i-logo img {
-		position: relative;
+	img {
 		z-index: 2;
+		position: absolute;
+		width: 60px;
+		height: 60px;
+		animation-fill-mode: forwards;
+	}
+	img.svelte {
+		width: 68px;
+		height: 68px;
+		top: -4px;
+		left: -4px;
+	}
+	img.zod {
+		width: 78px;
+		height: 78px;
+		top: -12px;
+		left: -10px;
+	}
+	.i-logo:not(.animate):hover img {
+		animation: fadeOut 500ms;
+		animation-fill-mode: forwards;
+	}
+	.i-logo:not(.animate):hover .i-letter {
+		animation: fadeIn 500ms;
+		animation-fill-mode: forwards;
 	}
 
-	:global(.i-logo.fade) img {
-		animation: fadeOut 2s;
+	:global(.i-logo.animate) img {
+		animation: fadeOut 2000ms;
+		animation-fill-mode: forwards;
 	}
-	:global(.i-logo.fade) .i-letter {
-		animation: fadeIn 2s;
+	:global(.i-logo.animate) .i-letter {
+		animation: fadeIn 2000ms;
+		animation-fill-mode: forwards;
 	}
-
-	:global(.i-logo.fadeIn) img {
-		animation: fadeIn 2s;
+	:global(.i-logo.animate2) img {
+		animation: fadeIn 2000ms;
+		animation-fill-mode: forwards;
 	}
-	:global(.i-logo.fadeIn) .i-letter {
-		animation: fadeOut 2s;
-	}
-	:global(.i-logo.hide) img {
-		opacity: 0;
+	:global(.i-logo.animate2) .i-letter {
+		animation: fadeOut 2000ms;
+		animation-fill-mode: forwards;
 	}
 
 	@keyframes fadeOut {

@@ -1,0 +1,10 @@
+import { serverClient } from '$trpc/serverClients';
+import type { PageServerLoad } from './$types';
+
+export const load = (async (event) => {
+	//In production use try catch on the server client for any errors that may occur!
+	const client = await serverClient(event);
+	return {
+		welcome: client.welcome()
+	};
+}) satisfies PageServerLoad;

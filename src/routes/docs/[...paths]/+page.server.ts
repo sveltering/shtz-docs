@@ -197,7 +197,7 @@ async function getTxtFilesRecursive(path: string, startPath = '') {
 
 	for (let i = 0, iLen = files.length; i < iLen; i++) {
 		const file = files[i] as any;
-		if (file.file) {
+		if (file?.file) {
 			let fileContent;
 			try {
 				fileContent = (
@@ -208,7 +208,7 @@ async function getTxtFilesRecursive(path: string, startPath = '') {
 			}
 			file.content = fileContent;
 		}
-		if (file.dir) {
+		if (file?.dir) {
 			file.files = await getTxtFilesRecursive(
 				path + '/' + file.dir,
 				startPath + '/' + file.dir

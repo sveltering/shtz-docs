@@ -134,7 +134,11 @@
 		<Navigator {allPaths} wayToPath={[...paths]} {baseHref} />
 	</div>
 	<div class="content column">
-		<div class="md markdown-body" bind:this={mdEl}>
+		<div
+			class="md markdown-body"
+			class:max100={!path?.codeFiles}
+			bind:this={mdEl}
+		>
 			{@html content}
 			<FooterNavigator
 				paths={[...paths]}
@@ -147,7 +151,7 @@
 		{#if path.codeFiles}
 			<div class="code" bind:this={codeEl}>
 				{#key pageKey}
-					<Code {path} open={[...open]} />
+					<Code {path} open={[...(open || [])]} />
 				{/key}
 			</div>
 		{/if}
@@ -185,6 +189,9 @@
 		min-width: 600px;
 		padding: 10px;
 		margin-right: 10px;
+	}
+	.container .column.content .md.max100 {
+		width: 100%;
 	}
 	.container .column.content .code {
 		background: #111;
