@@ -48,6 +48,7 @@
 		"codemirror": "^6.0.1",
 		"dompurify": "^3.0.5",
 		"jsdom": "^22.1.0",
-		"marked": "^5.1.1"
+		"marked": "^5.1.1",
+		"marked-gfm-heading-id": "^3.0.4"
 	}
 }

@@ -4,6 +4,7 @@ import type { PageServerLoad } from './$types';
 import { readdir } from 'fs/promises';
 import { readFile } from 'fs/promises';
 import { marked } from 'marked';
+import { gfmHeadingId } from 'marked-gfm-heading-id';
 //@ts-ignore
 import { JSDOM } from 'jsdom';
 //@ts-ignore
@@ -62,6 +63,8 @@ export const load = (async (event) => {
 
 	const purify = DOMPurify(new JSDOM('').window);
 	// const content = marked.parse(md.toString(), { mangle: false, headerIds: false });
+	marked.use(gfmHeadingId());
+
 	const content = marked(md, { mangle: false, headerIds: false });
 
 	return {

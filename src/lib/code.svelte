@@ -107,6 +107,7 @@
 		padding: 10px;
 		align-self: stretch;
 		display: table;
+		min-width: 150px;
 	}
 	.code-container .code-column.content {
 		flex: auto;

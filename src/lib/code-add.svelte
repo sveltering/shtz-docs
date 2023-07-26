@@ -18,13 +18,15 @@
 		const fileType = {
 			svelte: svelte(),
 			js: javascript(),
+			ts: javascript({
+				typescript: true
+			}),
 			html: html(),
 			css: css(),
 			json: json()
 		};
-		fileType.ts = fileType.js;
 		fileType.javascript = fileType.js;
-		fileType.typescript = fileType.js;
+		fileType.typescript = fileType.ts;
 		onMount(function () {
 			const state = EditorState.create({
 				doc: details.code,
@@ -44,6 +46,6 @@
 
 <style>
 	code {
-		font-size: 14px;
+		font-size: 0.7rem;
 	}
 </style>

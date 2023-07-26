@@ -37,13 +37,15 @@
 		const fileType = {
 			svelte: svelte(),
 			js: javascript(),
+			ts: javascript({
+				typescript: true
+			}),
 			html: html(),
 			css: css(),
 			json: json()
 		};
-		fileType.ts = fileType.js;
 		fileType.javascript = fileType.js;
-		fileType.typescript = fileType.js;
+		fileType.typescript = fileType.ts;
 
 		afterNavigate(function () {
 			pageKey = path.path;
@@ -51,7 +53,7 @@
 			if (!mdEl) {
 				return;
 			}
-			const codes = mdEl.querySelectorAll('code');
+			const codes = mdEl.querySelectorAll('pre code');
 			for (let i = 0, iLen = codes.length; i < iLen; i++) {
 				const mdCodeEl = codes[i];
 				const codeText = mdCodeEl.innerText;
@@ -145,7 +147,7 @@
 		{#if path.codeFiles}
 			<div class="code" bind:this={codeEl}>
 				{#key pageKey}
-					<Code {path} {open} />
+					<Code {path} open={[...open]} />
 				{/key}
 			</div>
 		{/if}
@@ -180,8 +182,7 @@
 		align-items: flex-start;
 	}
 	.container .column.content .md {
-		min-width: 440px;
-		max-width: 600px;
+		min-width: 600px;
 		padding: 10px;
 		margin-right: 10px;
 	}
@@ -191,6 +192,8 @@
 		top: 0px;
 		width: 100%;
 		overflow-x: scroll;
+		min-width: 600px;
+		font-size: 0.7rem;
 	}
 	@media (max-width: 1400px) {
 		.container .column.content {
@@ -208,6 +211,7 @@
 		.container .column.content .code {
 			height: auto !important;
 			overflow-x: initial;
+			min-width: 100%;
 		}
 	}
 	@media (min-width: 1800px) {
