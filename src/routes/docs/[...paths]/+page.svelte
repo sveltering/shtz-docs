@@ -32,7 +32,7 @@
 	}
 
 	const baseHref = $page.url.pathname.split('/').slice(0, 3).join('/');
-
+	let pageKey = path.path;
 	if (browser) {
 		const fileType = {
 			svelte: svelte(),
@@ -46,6 +46,7 @@
 		fileType.typescript = fileType.js;
 
 		afterNavigate(function () {
+			pageKey = path.path;
 			window.document.title = meta?.title || 'SHTZ docs';
 			if (!mdEl) {
 				return;
@@ -100,6 +101,13 @@
 		}
 	}
 	loadPaths(allPaths?.paths);
+
+	let open;
+	$: if (meta?.open) {
+		open = meta?.open?.split('/');
+	} else {
+		open = undefined;
+	}
 </script>
 
 <svelte:window on:resize={resizeCodeElHeight} />
@@ -136,7 +144,9 @@
 
 		{#if path.codeFiles}
 			<div class="code" bind:this={codeEl}>
-				<Code {path} />
+				{#key pageKey}
+					<Code {path} {open} />
+				{/key}
 			</div>
 		{/if}
 	</div>
@@ -170,6 +180,7 @@
 		align-items: flex-start;
 	}
 	.container .column.content .md {
+		min-width: 440px;
 		max-width: 600px;
 		padding: 10px;
 		margin-right: 10px;

@@ -1,13 +1,21 @@
 <script lang="ts">
-	import { createEventDispatcher } from 'svelte';
+	import { createEventDispatcher, onMount } from 'svelte';
 
 	export let codeFiles: any[];
 	export let padding: number = 1;
 	export let first = true;
+	export let open;
+
+	let currentOpen = open?.[0];
 
 	const dispatch = createEventDispatcher();
 
-	function loadFile(fileName: string, code: string, id: string, filePath: string) {
+	function loadFile(
+		fileName: string,
+		code: string,
+		id: string,
+		filePath: string
+	) {
 		return function () {
 			dispatch('loadFile', {
 				id,
@@ -29,6 +37,24 @@
 		}
 	}
 	const fileTypeAliases = { html: 'html5' };
+	if (open?.length === 1) {
+		for (let i = 0, iLen = codeFiles.length; i < iLen; i++) {
+			const file = codeFiles[i];
+			if (file.file === open[0]) {
+				onMount(function () {
+					dispatch('loadFile', {
+						fileName: file.file,
+						code: file.content,
+						id: file.id,
+						filePath: file.filePath
+					});
+				});
+				break;
+			}
+		}
+	} else {
+		open?.shift();
+	}
 </script>
 
 {#each codeFiles as file}
@@ -47,7 +73,11 @@
 		</span>
 	{/if}
 	{#if file?.dir}
-		<div class="dir hide-files" class:first>
+		<div
+			class="dir hide-files"
+			class:first
+			class:hide-files={currentOpen !== file.dir}
+		>
 			<!-- svelte-ignore a11y-click-events-have-key-events -->
 			<!-- svelte-ignore a11y-no-static-element-interactions -->
 			<span class="dir-name name-outer" on:click={toggle}>
@@ -62,6 +92,7 @@
 					on:loadFile={nestedLoadFile}
 					padding={padding + 1}
 					first={false}
+					{open}
 				/>
 			</div>
 		</div>

@@ -26,7 +26,7 @@ export const load = (async (event) => {
 	const meta: { [key: string]: string } = {};
 	const warnings: [string, any][] = [];
 
-	if (!path || !path.files.hasOwnProperty('readme.md')) {
+	if (!path || !path.files?.hasOwnProperty('readme.md')) {
 		throw error(404, {
 			message: "Sorry, this page doesn't exist"
 		});

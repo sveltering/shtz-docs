@@ -2,10 +2,11 @@
 	import Filenav from '$lib/filenav.svelte';
 	import CodeAdd from './code-add.svelte';
 
-	export let path;
+	export let path, open;
 
 	let openFiles: any = {};
 	let currentId: string = undefined as any as string;
+
 	function loadFile(event: any) {
 		const id = event.detail.id;
 		if (openFiles?.[id]) {
@@ -20,7 +21,7 @@
 
 <div class="code-container">
 	<div class="code-column nav">
-		<Filenav codeFiles={path.codeFiles} on:loadFile={loadFile} />
+		<Filenav codeFiles={path.codeFiles} on:loadFile={loadFile} {open} />
 	</div>
 
 	<div class="code-column content">
