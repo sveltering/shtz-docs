@@ -11,7 +11,7 @@ The server client differs from the load client in that your procedure functions 
 
 If SSR is necessary and you don't want to make http requests just to call your backend from your backend then use the server client over the load client!
 
-It can be used in `+page.server.ts` or `+layout.server.ts` files.
+It can be used in `+page.server.ts` , `+layout.server.ts` and `+server.ts` files.
 
 This client isn't to be used from the front end (and wouldn't work if you tried!)
 
