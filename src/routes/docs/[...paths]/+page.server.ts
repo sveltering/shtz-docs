@@ -1,8 +1,7 @@
 import { error } from '@sveltejs/kit';
 import type { PageServerLoad } from './$types';
 
-import { readdir } from 'fs/promises';
-import { readFile } from 'fs/promises';
+import { readdir, readFile } from 'fs/promises';
 import { marked } from 'marked';
 import { gfmHeadingId } from 'marked-gfm-heading-id';
 //@ts-ignore
@@ -15,13 +14,16 @@ const metaRegex = /\-\-\-(?:[ \t]{0,})meta\n((?:.|\n)*)\-\-\-/gim;
 const metaAliases: { [key: string]: string } = { desc: 'description' };
 
 const rootPath = process.cwd();
-const docsPath = rootPath + '/src/routes/md-docs';
+
+const docsPath = rootPath + '/static/md-docs';
+
 let allPaths: any = undefined;
 
 export const load = (async (event) => {
 	const paths = event.params.paths.split('/');
+	const first = paths.shift();
 	if (dev || allPaths === undefined) {
-		allPaths = await makePaths(docsPath + '/' + paths.shift(), '', true);
+		allPaths = await makePaths(docsPath + '/' + first, '', true);
 	}
 	const path = getCurrentPath(paths);
 	const meta: { [key: string]: string } = {};
@@ -98,6 +100,7 @@ export const load = (async (event) => {
 
 function getCurrentPath(paths: string[]) {
 	let current = allPaths;
+
 	for (let i = 0, iLen = paths.length; i < iLen; i++) {
 		current = current?.paths?.[paths[i]];
 		if (!current) {

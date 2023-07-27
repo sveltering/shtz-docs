@@ -5,6 +5,7 @@
 	export let padding: number = 1;
 	export let first = true;
 	export let open;
+	export let openFull;
 
 	let currentOpen = open?.[0];
 
@@ -40,7 +41,7 @@
 	if (open?.length === 1) {
 		for (let i = 0, iLen = codeFiles.length; i < iLen; i++) {
 			const file = codeFiles[i];
-			if (file.file === open[0]) {
+			if (file.file === open[0] && arraysEqual(file.filePath, openFull)) {
 				onMount(function () {
 					dispatch('loadFile', {
 						fileName: file.file,
@@ -54,6 +55,15 @@
 		}
 	} else {
 		open?.shift();
+	}
+	function arraysEqual(a: any[], b: any[]) {
+		if (a === b) return true;
+		if (a == null || b == null) return false;
+		if (a.length !== b.length) return false;
+		for (var i = 0; i < a.length; ++i) {
+			if (a[i] !== b[i]) return false;
+		}
+		return true;
 	}
 </script>
 
@@ -93,6 +103,7 @@
 					padding={padding + 1}
 					first={false}
 					{open}
+					{openFull}
 				/>
 			</div>
 		</div>

@@ -23,7 +23,12 @@
 
 <div class="code-container">
 	<div class="code-column nav">
-		<Filenav codeFiles={path.codeFiles} on:loadFile={loadFile} {open} />
+		<Filenav
+			codeFiles={path.codeFiles}
+			on:loadFile={loadFile}
+			{open}
+			openFull={[...(open || [])]}
+		/>
 	</div>
 
 	<div class="code-column content">

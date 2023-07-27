@@ -44,6 +44,8 @@
 		"@codemirror/state": "^6.2.1",
 		"@exuanbo/file-icons-js": "^3.3.0",
 		"@replit/codemirror-lang-svelte": "^6.0.0",
+		"@sveltejs/adapter-node": "^1.3.1",
+		"@sveltejs/adapter-static": "^2.0.2",
 		"@uiw/codemirror-theme-vscode": "^4.21.8",
 		"codemirror": "^6.0.1",
 		"dompurify": "^3.0.5",
