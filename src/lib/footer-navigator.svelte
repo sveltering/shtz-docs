@@ -25,7 +25,7 @@
 <div class="end-links">
 	{#if prevTitle}
 		<div class="end-link previous" class:first={prevIsFirst}>
-			<a href={baseHref + prevLink} on:click={() => window.scrollTo(0, 0)}>
+			<a href={baseHref + prevLink}>
 				<span>Previous</span>
 				{prevTitle}
 			</a>
@@ -33,7 +33,7 @@
 	{/if}
 	{#if nextTitle}
 		<div class="end-link next" class:first={nextIsFirst}>
-			<a href={baseHref + nextLink} on:click={() => window.scrollTo(0, 0)}>
+			<a href={baseHref + nextLink}>
 				<span>Next</span>
 				{nextTitle}
 			</a>
@@ -85,5 +85,13 @@
 	}
 	.end-link.next {
 		text-align: right;
+	}
+	@media (max-width: 620px) {
+		.end-links {
+			min-width: 50%;
+		}
+		.end-link {
+			min-width: 50%;
+		}
 	}
 </style>

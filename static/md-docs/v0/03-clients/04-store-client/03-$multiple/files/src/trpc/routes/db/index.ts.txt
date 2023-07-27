@@ -57,6 +57,7 @@ let stringDB = {
 			throw new Error('Failed to insert');
 		}
 		if (this.data.includes(addItem)) {
+			this.data = this.data.filter((item) => item !== addItem);
 		}
 		this.data.push(addItem);
 		global.stringDBStore = this.data;

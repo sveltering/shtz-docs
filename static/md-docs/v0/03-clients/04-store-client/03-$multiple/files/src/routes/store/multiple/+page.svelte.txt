@@ -5,10 +5,12 @@
 	export let data: PageData;
 
 	let list = storeClient.db.addToList.mutate.$multiple({
-		prefill: data.prefill,
 		loading: true,
-		unique: function (input, response) {
-			return input ? input : response;
+		prefill: data.prefill,
+		changeTimer: 1000,
+		uniqueResponse: 'replace',
+		unique(input, data) {
+			return input ? input : data;
 		}
 	});
 
@@ -20,14 +22,14 @@
 </script>
 
 {#if $list.loading}
-	<span style="font-weight:bold;font-size:1.2rem">Adding an item... </span><br />
+	<span style="font-weight:bold;font-size:1.2rem">Loading items... </span><br />
 {/if}
 
 {#each $list.responses as response}
 	{#if response.loading}
 		Adding item...
 	{:else if response.success}
-		{response.data}
+		<span class:changed={response.changed}>{response.data}</span>
 	{:else if response.error}
 		{response.error.message}
 	{/if}
@@ -37,3 +39,14 @@
 <form on:submit|preventDefault={addItem}>
 	<input placeholder="Item" bind:this={itemInput} />
 </form>
+
+<style>
+	span {
+		color: black;
+		transition: color 1s linear;
+	}
+	span.changed {
+		color: red;
+		transition: color 1s linear;
+	}
+</style>

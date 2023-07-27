@@ -34,3 +34,6 @@ As you can see on this page we create a multiple store with the following option
 - `loading` - multiple stores have multiple responses of which any, all or none could be loading.
   This loading adds an extra `loading` property on the store which is true if at least 1 response is still loading.
 - `unique` - is a function to detrmine whether an input or response is unique and to replace an older unique value.
+
+And if you check the page source, you'll see the prefill data get's rendered!
+![demo!](/img/06.gif)

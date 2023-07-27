@@ -21,6 +21,7 @@
 
 	let mdEl;
 	let codeEl;
+	let containerEl;
 
 	let { warnings, meta, content, allPaths, paths, path } = data;
 	$: ({ warnings, meta, content, paths, path } = data);
@@ -50,6 +51,11 @@
 		afterNavigate(function () {
 			pageKey = path.path;
 			window.document.title = meta?.title || 'SHTZ docs';
+			console.log('NEXT');
+
+			if (containerEl) {
+				containerEl.scrollIntoView();
+			}
 			if (!mdEl) {
 				return;
 			}
@@ -129,7 +135,7 @@
 	<h1>Warnings: check console for error.</h1>
 {/if}
 
-<div class="container">
+<div class="container" bind:this={containerEl}>
 	<div class="column nav">
 		<Navigator {allPaths} wayToPath={[...paths]} {baseHref} />
 	</div>
@@ -231,6 +237,14 @@
 		.container .column.content .md {
 			min-width: 900px;
 			padding: 10px;
+		}
+	}
+	@media (max-width: 620px) {
+		.container .column.nav {
+			display: none;
+		}
+		.container .column.content .md {
+			min-width: 100%;
 		}
 	}
 </style>
