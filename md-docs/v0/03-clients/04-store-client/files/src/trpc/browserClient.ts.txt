@@ -1,0 +1,22 @@
+import {
+	browserClientCreate,
+	loadClientCreate,
+	storeClientCreate,
+	type ProcedureReturnType
+} from '@sveltering/shtz/browser';
+import type { Router } from '$trpc/hooks';
+
+// Change the port from 5173 if necessary
+export const browserClient = browserClientCreate<Router>({
+	url: 'http://localhost:5173/trpc'
+});
+
+export const loadClient = loadClientCreate<Router>({
+	url: 'http://localhost:5173/trpc'
+});
+
+export const storeClient = storeClientCreate<Router>({
+	url: 'http://localhost:5173/trpc'
+});
+
+export type { ProcedureReturnType };

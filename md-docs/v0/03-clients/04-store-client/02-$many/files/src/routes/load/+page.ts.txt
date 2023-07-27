@@ -1,0 +1,9 @@
+import { loadClient } from '$trpc/browserClients';
+import type { PageLoad } from './$types';
+
+export const load = (async (event) => {
+	//In production use try catch on the load client for any errors that may occur!
+	return {
+		welcome: await loadClient(event).welcome.query()
+	};
+}) satisfies PageLoad;

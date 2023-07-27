@@ -1,0 +1,21 @@
+html,
+body {
+  font-family: Nunito, Arial, sans-serif;
+  font-size: 16px;
+  font-weight: 100;
+  background-color: #000;
+  color: #aeaeae;
+  width: 100%;
+  height: 100%;
+  overflow-y: auto;
+}
+
+a {
+  text-decoration: none;
+  color: #c55936;
+}
+
+a:hover {
+  text-decoration: underline;
+  text-underline-offset: 0.2rem;
+}
