@@ -1,6 +1,6 @@
 ---meta
 title: $multiple store
-open: src/trpc/routes/db/index.ts
+open: src/trpc/routes/db/index.ts, src/trpc/browserClient.ts
 ---
 
 # $multiple store

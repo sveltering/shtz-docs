@@ -127,7 +127,7 @@
 	.dir.first {
 		margin-left: 0px;
 	}
-	:global(.dir.hide-files) .files {
+	.dir.hide-files .files {
 		display: none !important;
 	}
 	.dir .dir-name::before {
@@ -137,7 +137,7 @@
 		color: #aaa;
 		font-weight: 300;
 	}
-	:global(.dir.hide-files) .dir-name::before {
+	.dir.hide-files .dir-name::before {
 		transform: rotate(0deg);
 	}
 	.name-outer {

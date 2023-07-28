@@ -1,17 +1,10 @@
 <script lang="ts">
-	import { browser } from '$app/environment';
 	import { onDestroy, onMount } from 'svelte';
 	let timeouts: any = [];
 
 	let logoEl: HTMLDivElement;
 	let wrapperEl: HTMLDivElement;
-	let embedEl: HTMLDivElement;
-
-	let mounted = false;
-	onMount(() => (mounted = browser));
-
-	let loadcount: number = 0;
-	$: if (mounted && loadcount > 3) {
+	onMount(function () {
 		let logos = logoEl.querySelectorAll('.i-logo');
 		timeouts.push(
 			setTimeout(function () {
@@ -23,21 +16,9 @@
 		timeouts.push(
 			setTimeout(function () {
 				wrapperEl.classList.add('animation-done');
-			}, 3000)
+			}, 2500)
 		);
-	}
-	$: if (mounted) {
-		(logoEl.querySelector('img.svelte') as HTMLImageElement).src =
-			'/svelte-logo.svg';
-		(logoEl.querySelector('img.waving') as HTMLImageElement).src =
-			'/waving-logo.svg';
-		(logoEl.querySelector('img.trpc') as HTMLImageElement).src =
-			'/trpc-logo.svg';
-		(logoEl.querySelector('img.zod') as HTMLImageElement).src = '/zod-logo.svg';
-	}
-	function imgLoaded() {
-		loadcount++;
-	}
+	});
 	onDestroy(function () {
 		for (let i = 0, iLen = timeouts.length; i < iLen; i++) {
 			clearTimeout(timeouts[i]);
@@ -45,49 +26,44 @@
 	});
 </script>
 
-<svelte:head>
-	<meta http-equiv="Cross-Origin-Opener-Policy" content="same-origin" />
-	<meta http-equiv="Cross-Origin-Embedder-Policy" content="require-corp" />
-</svelte:head>
-
 <div class="wrapper" bind:this={wrapperEl}>
 	<div class="logo" bind:this={logoEl}>
 		<div class="i-logos">
 			<div class="i-logo fade-svelte">
-				<img alt="svelte logo" class="svelte" on:load={imgLoaded} />
+				<img src="/svelte-logo.svg" alt="svelte logo" class="svelte" />
 				<div class="i-letter fade-svelte">S</div>
 			</div>
 			<div class="i-logo fade-hello not-first">
-				<img alt="waving logo" class="waving" on:load={imgLoaded} />
+				<img src="/waving-logo.svg" alt="waving logo" />
 				<div class="i-letter fade-hello not-first">H</div>
 			</div>
 			<div class="i-logo fade-trpc not-first">
-				<img alt="trpc logo" class="trpc" on:load={imgLoaded} />
+				<img src="/trpc-logo.svg" alt="trpc logo" />
 				<div class="i-letter fade-trpc not-first">T</div>
 			</div>
 			<div class="i-logo fade-zod not-first">
-				<img alt="zod logo" class="zod" on:load={imgLoaded} />
+				<img src="/zod-logo.svg" alt="zod logo" class="zod" />
 				<div class="i-letter fade-zod not-first">Z</div>
 			</div>
 		</div>
 	</div>
 	<div class="links">
-		<a href="/docs/v0/install"><i class="icon text-icon" />Docs</a>
+		<a href="/docs/v0/install"
+			><i class="icon text-icon svelte-1bevz0d" />Docs</a
+		>
 		<a href="https://github.com/sveltering/shtz" target="_blank"
-			><i class="icon github-icon" />Github</a
+			><i class="icon github-icon svelte-1bevz0d" />Github</a
 		>
 		<a href="https://www.npmjs.com/package/@sveltering/shtz" target="_blank"
-			><i class="icon npm-icon" />npm</a
+			><i class="icon npm-icon svelte-1bevz0d" />npm</a
 		>
 	</div>
 </div>
 
 <div class="frame">
-	<!-- <div bind:this={embedEl} /> -->
 	<iframe
-		src="https://stackblitz.com/edit/github-ror6t4-ygnopj?embed=1&file=src%2Froutes%2F%2Bpage.svelte&hideExplorer=1&theme=dark"
-		allow="cross-origin-isolated"
-		title="Demo"
+		src="https://stackblitz.com/edit/github-ror6t4-rmfcer?embed=1&file=src%2Froutes%2F%2Bpage.svelte"
+		title="Example"
 	/>
 </div>
 
@@ -103,7 +79,7 @@
 		transition: height 1s;
 	}
 	:global(.wrapper.animation-done) {
-		height: 150px !important;
+		height: 250px !important;
 		transition: height 1s ease-in;
 	}
 	.frame {
@@ -112,7 +88,7 @@
 		padding: 20px;
 		border: 0;
 	}
-	:global(.frame iframe) {
+	.frame iframe {
 		width: 100%;
 		height: 100%;
 		border: 0;
@@ -162,31 +138,6 @@
 		color: #fff;
 		opacity: 0;
 	}
-	:global(.animation-done) .i-letter {
-		width: 100px;
-		height: 100px;
-		font-size: 3rem;
-		transition: height 1s, width 1s, font-size 1s;
-	}
-	:global(.animation-done) .i-logo {
-		width: 100px;
-		height: 100px;
-		transition: height 1s, width 1s, font-size 1s;
-	}
-
-	:global(.animation-done) .links {
-		margin-top: 10px;
-		font-size: 1rem;
-		transition: margin 1s, font-size 1s;
-	}
-	:global(.animation-done) .links .icon::before {
-		font-size: 15px;
-		width: 20px;
-		transition: width 1s, font-size 1s;
-	}
-	:global(.animation-done) .i-logo img {
-		display: none;
-	}
 	img {
 		z-index: 2;
 		position: absolute;
@@ -232,6 +183,10 @@
 		animation-fill-mode: forwards;
 	}
 	@media (max-width: 1400px) {
+		.docs {
+			margin-top: 30px;
+			font-size: 1rem;
+		}
 		.i-logo {
 			width: 60px;
 			height: 60px;

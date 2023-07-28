@@ -1,4 +1,6 @@
 <script lang="ts">
+	import Split from 'split.js';
+
 	import { minimalSetup, EditorView } from 'codemirror';
 	import { EditorState } from '@codemirror/state';
 	import { svelte } from '@replit/codemirror-lang-svelte';
@@ -8,7 +10,7 @@
 	import { json } from '@codemirror/lang-json';
 	import { vscodeDarkInit } from '@uiw/codemirror-theme-vscode';
 
-	import { afterNavigate } from '$app/navigation';
+	import { afterNavigate, beforeNavigate } from '$app/navigation';
 	import { page } from '$app/stores';
 	import Code from '$lib/code.svelte';
 	import Header from '$lib/header.svelte';
@@ -48,13 +50,23 @@
 		fileType.javascript = fileType.js;
 		fileType.typescript = fileType.ts;
 
+		let splitt;
+		beforeNavigate(function () {
+			if (splitt) {
+				splitt.destroy();
+				splitt = null;
+			}
+		});
 		afterNavigate(function () {
 			pageKey = path.path;
 			window.document.title = meta?.title || 'SHTZ docs';
-			console.log('NEXT');
-
 			if (containerEl) {
 				containerEl.scrollIntoView();
+			}
+			if (codeEl) {
+				splitt = Split(['#split-1', '#split-2'], {
+					sizes: [40, 60]
+				});
 			}
 			if (!mdEl) {
 				return;
@@ -110,11 +122,13 @@
 	}
 	loadPaths(allPaths?.paths);
 
-	let open;
+	let openAll;
 	$: if (meta?.open) {
-		open = meta?.open?.split('/');
+		openAll = meta?.open
+			.split(',')
+			.map((path: string) => path?.trim()?.split('/'));
 	} else {
-		open = undefined;
+		openAll = undefined;
 	}
 </script>
 
@@ -144,6 +158,7 @@
 			class="md markdown-body"
 			class:max100={!path?.codeFiles}
 			bind:this={mdEl}
+			id="split-1"
 		>
 			{@html content}
 			<FooterNavigator
@@ -155,9 +170,9 @@
 		</div>
 
 		{#if path.codeFiles}
-			<div class="code" bind:this={codeEl}>
+			<div class="code" bind:this={codeEl} id="split-2">
 				{#key pageKey}
-					<Code {path} open={[...(open || [])]} />
+					<Code {path} openAll={[...(openAll || [])]} />
 				{/key}
 			</div>
 		{/if}
@@ -192,7 +207,7 @@
 		align-items: flex-start;
 	}
 	.container .column.content .md {
-		min-width: 600px;
+		min-width: 300px;
 		padding: 10px;
 		margin-right: 10px;
 	}
@@ -207,6 +222,19 @@
 		overflow-x: scroll;
 		min-width: 600px;
 		font-size: 0.7rem;
+	}
+	.minimize {
+		width: 10px;
+		position: absolute;
+		height: 100%;
+		right: 0;
+		top: 0;
+		background-color: #737373;
+		cursor: pointer;
+	}
+
+	.minimize:hover {
+		background-color: #555555;
 	}
 	@media (max-width: 1400px) {
 		.container .column.content {
@@ -246,5 +274,25 @@
 		.container .column.content .md {
 			min-width: 100%;
 		}
+	}
+
+	:global(.gutter) {
+		background-color: #8b8b8b;
+
+		background-repeat: no-repeat;
+		background-position: 50%;
+		width: 10px;
+		height: 100vh;
+		position: sticky;
+		top: 0px;
+		margin-right: 10px;
+		cursor: col-resize;
+	}
+
+	:global(.gutter:hover) {
+		background-color: #e7e7e7;
+	}
+	:global(.gutter:active) {
+		background-color: #e7e7e7;
 	}
 </style>
