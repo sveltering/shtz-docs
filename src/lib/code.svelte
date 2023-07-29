@@ -220,4 +220,11 @@
 	:global(body.light) .open-files .open-file .close-file:hover {
 		color: #fff;
 	}
+	:global(body.light)
+		.code-container
+		.code-column.content
+		.code-outer
+		.navigate {
+		border-bottom: 1px solid #dbdbdb;
+	}
 </style>

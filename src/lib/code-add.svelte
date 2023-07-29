@@ -54,6 +54,7 @@
 			document.body.addEventListener('changeTheme', changeTheme);
 		});
 		onDestroy(function () {
+			editorView?.destroy();
 			document.body.removeEventListener('changeTheme', changeTheme);
 		});
 	}

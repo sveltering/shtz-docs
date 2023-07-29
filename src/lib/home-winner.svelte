@@ -73,7 +73,7 @@
 		</div>
 	</div>
 	<div class="links">
-		<a href="/docs/v0/install"><i class="icon text-icon" />Docs</a>
+		<a href="/docs/v0/premise"><i class="icon text-icon" />Docs</a>
 		<a href="https://github.com/sveltering/shtz" target="_blank"
 			><i class="icon github-icon" />Github</a
 		>

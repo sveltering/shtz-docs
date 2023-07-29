@@ -97,7 +97,7 @@
 		border-top: 1px solid rgba(216, 222, 228, 1);
 	}
 	:global(body.light) .end-link {
-		background-color: #f6f8fa;
+		background-color: #dbdbdb;
 	}
 	:global(body.light) .end-link a span {
 		color: #000;

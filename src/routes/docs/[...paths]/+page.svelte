@@ -77,16 +77,18 @@
 		};
 
 		beforeNavigate(function () {
+			editorViews.forEach((view) => view?.destroy());
 			editorViews = [];
 			document.body.removeEventListener('changeTheme', changeTheme);
 		});
+		let firstLoad = true;
 		afterNavigate(function () {
 			pageKey = path.path;
 			window.document.title = meta?.title || 'SHTZ docs';
-
-			if (containerEl) {
+			if (!firstLoad && containerEl) {
 				containerEl.scrollIntoView();
 			}
+			firstLoad = false;
 			if (!codeEl) {
 				splitt?.destroy();
 				splitt = null;
@@ -115,6 +117,11 @@
 				const langKeyIndex =
 					langClassIndex === -1 ? undefined : langClassIndex + 1;
 				const language = fileType?.[classNameSplit?.[langKeyIndex]];
+				if (!language) {
+					mdCodeEl.classList.add('wrap');
+					continue;
+				}
+
 				mdCodeEl.innerHTML = '';
 				const extensions = [
 					editorTheme.of(loadTheme),
@@ -244,6 +251,11 @@
 		min-width: 300px;
 		padding: 10px;
 		margin-right: 10px;
+		font-weight: 300;
+	}
+	:global(.container .column.content .md pre code.wrap) {
+		word-wrap: break-word;
+		white-space: break-spaces;
 	}
 	.container .column.content .md.max100 {
 		width: 100%;
@@ -327,5 +339,9 @@
 
 	:global(body.light) {
 		background-color: #f6f6f6;
+	}
+
+	:global(.markdown-body code .cm-editor) {
+		background-color: transparent !important;
 	}
 </style>

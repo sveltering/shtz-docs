@@ -1,0 +1,11 @@
+import { TRPC } from '@sveltering/shtz/server';
+
+export const t = new TRPC({
+    // Path is optional with the default value being /trpc 
+    path: '/trpc',
+    context: async function (event) {
+        return {
+            welcome: 'Hello and welcome!'
+        };
+    }
+});
