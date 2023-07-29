@@ -158,4 +158,22 @@
 	.file-name {
 		white-space: nowrap;
 	}
+	:global(body.light) .name {
+		color: #000;
+	}
+	:global(body.light) .dir .dir-name::before {
+		color: #000;
+	}
+	:global(body.light) .dir .files {
+		border-left: 1px solid #000;
+	}
+	:global(body.light) .name-outer:hover {
+		background-color: #bbb;
+	}
+	.ts-icon {
+		color: #3078c6;
+	}
+	.svelte-icon {
+		color: #ff440e;
+	}
 </style>

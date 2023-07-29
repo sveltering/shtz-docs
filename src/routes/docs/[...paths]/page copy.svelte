@@ -2,7 +2,7 @@
 	import Split from 'split.js';
 
 	import { minimalSetup, EditorView } from 'codemirror';
-	import { Compartment, EditorState } from '@codemirror/state';
+	import { EditorState } from '@codemirror/state';
 	import { svelte } from '@replit/codemirror-lang-svelte';
 	import { javascript } from '@codemirror/lang-javascript';
 	import { html } from '@codemirror/lang-html';
@@ -57,29 +57,7 @@
 			typeof lastSplitSize === 'string'
 				? JSON.parse(lastSplitSize)
 				: lastSplitSize;
-
-		let codes = [];
-		let editorViews = [];
-		let loadTheme = localStorage?.getItem('theme')
-			? githubLightInit()
-			: vscodeDarkInit();
-
-		let editorTheme = new Compartment();
-		const changeTheme = function () {
-			loadTheme = localStorage?.getItem('theme')
-				? vscodeDarkInit()
-				: githubLightInit();
-			for (let i = 0, iLen = codes.length; i < iLen; i++) {
-				editorViews[i].dispatch({
-					effects: editorTheme.reconfigure(loadTheme)
-				});
-			}
-		};
-
-		beforeNavigate(function () {
-			editorViews = [];
-			document.body.removeEventListener('changeTheme', changeTheme);
-		});
+		beforeNavigate(function () {});
 		afterNavigate(function () {
 			pageKey = path.path;
 			window.document.title = meta?.title || 'SHTZ docs';
@@ -88,7 +66,7 @@
 				containerEl.scrollIntoView();
 			}
 			if (!codeEl) {
-				splitt?.destroy();
+				splitt.destroy();
 				splitt = null;
 			}
 			if (codeEl && !splitt) {
@@ -103,9 +81,8 @@
 			if (!mdEl) {
 				return;
 			}
-			document.body.addEventListener('changeTheme', changeTheme);
-			codes = mdEl.querySelectorAll('pre code');
-
+			const loadTheme = document.body.classList.contains('light');
+			const codes = mdEl.querySelectorAll('pre code');
 			for (let i = 0, iLen = codes.length; i < iLen; i++) {
 				const mdCodeEl = codes[i];
 				const codeText = mdCodeEl.innerText;
@@ -117,7 +94,7 @@
 				const language = fileType?.[classNameSplit?.[langKeyIndex]];
 				mdCodeEl.innerHTML = '';
 				const extensions = [
-					editorTheme.of(loadTheme),
+					loadTheme ? githubLightInit() : vscodeDarkInit(),
 					minimalSetup,
 					EditorView.lineWrapping
 				];
@@ -128,7 +105,7 @@
 					doc: codeText,
 					extensions
 				});
-				editorViews.push(new EditorView({ parent: mdCodeEl, state }));
+				const view = new EditorView({ parent: mdCodeEl, state });
 			}
 			resizeCodeElHeight();
 		});
@@ -322,7 +299,7 @@
 		background-color: #e1e1e1;
 	}
 	:global(body.light .gutter:active) {
-		background-color: #dbdbdb;
+		background-color: #fff;
 	}
 
 	:global(body.light) {

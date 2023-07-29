@@ -1,14 +1,15 @@
 <script lang="ts">
 	import { basicSetup, EditorView } from 'codemirror';
-	import { EditorState } from '@codemirror/state';
+	import { Compartment, EditorState } from '@codemirror/state';
 	import { svelte } from '@replit/codemirror-lang-svelte';
 	import { javascript } from '@codemirror/lang-javascript';
 	import { html } from '@codemirror/lang-html';
 	import { css } from '@codemirror/lang-css';
 	import { json } from '@codemirror/lang-json';
 	import { vscodeDarkInit } from '@uiw/codemirror-theme-vscode';
+	import { githubLightInit } from '@uiw/codemirror-theme-github';
 
-	import { onMount } from 'svelte';
+	import { onDestroy, onMount } from 'svelte';
 	import { browser } from '$app/environment';
 
 	export let details;
@@ -27,17 +28,33 @@
 		};
 		fileType.javascript = fileType.js;
 		fileType.typescript = fileType.ts;
+
+		let editorView;
+		let loadTheme = document.body.classList.contains('light');
+		let editorTheme = new Compartment();
+		const changeTheme = function () {
+			loadTheme = document.body.classList.contains('light');
+			editorView.dispatch({
+				effects: editorTheme.reconfigure(
+					loadTheme ? githubLightInit() : vscodeDarkInit()
+				)
+			});
+		};
 		onMount(function () {
 			const state = EditorState.create({
 				doc: details.code,
 				extensions: [
-					vscodeDarkInit(),
+					editorTheme.of(loadTheme ? githubLightInit() : vscodeDarkInit()),
 					basicSetup,
 					fileType[details.fileName.split('.').pop()],
 					EditorView.lineWrapping
 				]
 			});
-			new EditorView({ parent: codeEl, state });
+			editorView = new EditorView({ parent: codeEl, state });
+			document.body.addEventListener('changeTheme', changeTheme);
+		});
+		onDestroy(function () {
+			document.body.removeEventListener('changeTheme', changeTheme);
 		});
 	}
 </script>

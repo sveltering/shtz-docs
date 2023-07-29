@@ -93,4 +93,10 @@
 	.links a {
 		font-size: 1.2rem;
 	}
+	:global(body.light) .dir.first .name {
+		color: #000;
+	}
+	:global(body.light) .dir .name.current {
+		color: rgb(182, 64, 22);
+	}
 </style>

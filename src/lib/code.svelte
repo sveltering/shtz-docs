@@ -188,4 +188,36 @@
 	.open-files .open-file .close-file:hover {
 		background: #666;
 	}
+
+	@media (max-width: 900px) {
+		.code-container {
+			flex-direction: column-reverse;
+		}
+		.code-column {
+			min-width: 100%;
+		}
+	}
+
+	:global(body.light) .nav {
+		background: #dbdbdb;
+	}
+	:global(body.light) .open-files {
+		background: #eff1f2;
+	}
+	:global(body.light) .code-container .code-column.content {
+		background: #fff;
+	}
+	:global(body.light) .open-files .open-file.open {
+		background: #fff;
+	}
+
+	:global(body.light) .open-files .open-file:not(.open):hover {
+		background: #e3e3e3;
+	}
+	:global(body.light) .open-files .open-file .close-file {
+		color: #000;
+	}
+	:global(body.light) .open-files .open-file .close-file:hover {
+		color: #fff;
+	}
 </style>

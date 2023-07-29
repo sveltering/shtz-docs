@@ -49,13 +49,11 @@
 		justify-content: space-between;
 		border-top: 1px solid #333;
 		padding: 16px 0 6px 0;
-		min-width: 420px;
 		width: 100%;
 	}
 	.end-link {
 		white-space: nowrap;
 		width: 50%;
-		min-width: 200px;
 		background-color: #000;
 		border-radius: 10px;
 		flex-grow: 1;
@@ -88,10 +86,29 @@
 	}
 	@media (max-width: 620px) {
 		.end-links {
-			min-width: 50%;
+			min-width: 100%;
 		}
 		.end-link {
 			min-width: 50%;
+			min-width: calc(50% - 10px);
 		}
+	}
+	:global(body.light) .end-links {
+		border-top: 1px solid rgba(216, 222, 228, 1);
+	}
+	:global(body.light) .end-link {
+		background-color: #f6f8fa;
+	}
+	:global(body.light) .end-link a span {
+		color: #000;
+	}
+	:global(body.light) .end-link a {
+		color: #000;
+	}
+	:global(body.light) .end-link.first a span {
+		color: rgb(182, 64, 22);
+	}
+	:global(body.light) .end-link.first a {
+		color: rgb(182, 64, 22);
 	}
 </style>

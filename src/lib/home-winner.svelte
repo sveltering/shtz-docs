@@ -27,6 +27,7 @@
 		);
 	}
 	$: if (mounted) {
+		document.body.classList.remove('light');
 		(logoEl.querySelector('img.svelte') as HTMLImageElement).src =
 			'/svelte-logo.svg';
 		(logoEl.querySelector('img.waving') as HTMLImageElement).src =

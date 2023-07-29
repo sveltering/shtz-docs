@@ -38,6 +38,9 @@ dependencies:
   '@sveltejs/adapter-static':
     specifier: ^2.0.2
     version: 2.0.2(@sveltejs/kit@1.22.3)
+  '@uiw/codemirror-theme-github':
+    specifier: ^4.21.9
+    version: 4.21.9(@codemirror/language@6.8.0)(@codemirror/state@6.2.1)(@codemirror/view@6.15.3)
   '@uiw/codemirror-theme-vscode':
     specifier: ^4.21.8
     version: 4.21.8(@codemirror/language@6.8.0)(@codemirror/state@6.2.1)(@codemirror/view@6.15.3)
@@ -966,6 +969,16 @@ packages:
       eslint-visitor-keys: 3.4.1
     dev: true
 
+  /@uiw/codemirror-theme-github@4.21.9(@codemirror/language@6.8.0)(@codemirror/state@6.2.1)(@codemirror/view@6.15.3):
+    resolution: {integrity: sha512-iTcnQHO6gCUp/8s6IzHBQ+oUq9H3zIMmlyhI3HBUpZNl++2gZrJIQCES8aQj6TSzQFqh4UBNal31lVl75j/Wkw==}
+    dependencies:
+      '@uiw/codemirror-themes': 4.21.9(@codemirror/language@6.8.0)(@codemirror/state@6.2.1)(@codemirror/view@6.15.3)
+    transitivePeerDependencies:
+      - '@codemirror/language'
+      - '@codemirror/state'
+      - '@codemirror/view'
+    dev: false
+
   /@uiw/codemirror-theme-vscode@4.21.8(@codemirror/language@6.8.0)(@codemirror/state@6.2.1)(@codemirror/view@6.15.3):
     resolution: {integrity: sha512-2F2sC0NXzmRWwt+w+D0Dpx3lN1aYlyJcSC/x9CJ5CZYP/TPykLkb2RcXipAIualNW35U7/S8sBPAO/jD8e3v4g==}
     dependencies:
@@ -978,6 +991,18 @@ packages:
 
   /@uiw/codemirror-themes@4.21.8(@codemirror/language@6.8.0)(@codemirror/state@6.2.1)(@codemirror/view@6.15.3):
     resolution: {integrity: sha512-0Zqi/nosFJ00pCpNgj8e3uc7hM8cdLFNfYs9ud4V6ERiQYglX83dYGnDRSH983sH07q9JxOTBuNRvFcPJdxOHQ==}
+    peerDependencies:
+      '@codemirror/language': '>=6.0.0'
+      '@codemirror/state': '>=6.0.0'
+      '@codemirror/view': '>=6.0.0'
+    dependencies:
+      '@codemirror/language': 6.8.0
+      '@codemirror/state': 6.2.1
+      '@codemirror/view': 6.15.3
+    dev: false
+
+  /@uiw/codemirror-themes@4.21.9(@codemirror/language@6.8.0)(@codemirror/state@6.2.1)(@codemirror/view@6.15.3):
+    resolution: {integrity: sha512-ndfka95Ax4LXQSPVtCXJC3Qu2ruhlWUB7PAj+qTeMZobYJdXRxDEm4jMl+/d5fN1ok3jivShQdNgIwvEIFf4lg==}
     peerDependencies:
       '@codemirror/language': '>=6.0.0'
       '@codemirror/state': '>=6.0.0'

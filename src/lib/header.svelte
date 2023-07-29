@@ -1,9 +1,19 @@
 <script lang="ts">
+	import { browser } from '$app/environment';
 	import { onDestroy, onMount } from 'svelte';
 	let timeouts: any = [];
 
 	let logoEl: HTMLDivElement;
+	let themeButton: HTMLButtonElement;
+
+	const event = new Event('changeTheme');
 	onMount(function () {
+		if (!browser) {
+			return;
+		}
+		if (localStorage?.getItem('theme')) {
+			document.body.classList.add('light');
+		}
 		let logos = logoEl.querySelectorAll('.i-logo');
 		timeouts.push(
 			setTimeout(function () {
@@ -32,6 +42,17 @@
 			clearTimeout(timeouts[i]);
 		}
 	});
+	function changeTheme() {
+		if (document.body.classList.contains('light')) {
+			document.body.classList.remove('light');
+			document.body.dispatchEvent(event);
+			localStorage?.setItem('theme', '');
+		} else {
+			document.body.classList.add('light');
+			document.body.dispatchEvent(event);
+			localStorage?.setItem('theme', 'light');
+		}
+	}
 </script>
 
 <div class="nav">
@@ -57,11 +78,21 @@
 			</div>
 		</div>
 	</a>
+	<div class="theme">
+		<button
+			on:click={changeTheme}
+			bind:this={themeButton}
+			class="themeButton"
+		/>
+	</div>
 </div>
 
 <style>
 	.nav {
 		padding: 10px;
+		display: flex;
+		justify-content: space-between;
+		align-items: center;
 	}
 	a {
 		text-decoration: none;
@@ -124,6 +155,10 @@
 		animation-fill-mode: forwards;
 	}
 
+	.theme {
+		display: inline-block;
+	}
+
 	:global(.i-logo.animate) img {
 		animation: fadeOut 2000ms;
 		animation-fill-mode: forwards;
@@ -156,5 +191,26 @@
 		100% {
 			opacity: 1;
 		}
+	}
+	:global(body.light) .i-letter {
+		color: #000;
+	}
+	.themeButton {
+		padding: 10px;
+		border: 0;
+		background-color: white;
+		color: #000;
+		font-weight: 600;
+		border-radius: 5px;
+	}
+	.themeButton:before {
+		content: 'Light';
+	}
+	:global(body.light) .themeButton:before {
+		content: 'Dark';
+	}
+	:global(body.light) .themeButton {
+		background-color: black;
+		color: #fff;
 	}
 </style>

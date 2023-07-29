@@ -11,7 +11,7 @@
 	import { vscodeDarkInit } from '@uiw/codemirror-theme-vscode';
 	import { githubLightInit } from '@uiw/codemirror-theme-github';
 
-	import { afterNavigate, beforeNavigate } from '$app/navigation';
+	import { afterNavigate } from '$app/navigation';
 	import { page } from '$app/stores';
 	import Code from '$lib/code.svelte';
 	import Header from '$lib/header.svelte';
@@ -19,6 +19,7 @@
 	import type { PageData } from './$types';
 	import { browser } from '$app/environment';
 	import FooterNavigator from '$lib/footer-navigator.svelte';
+	import { onDestroy } from 'svelte';
 
 	export let data: PageData;
 
@@ -57,29 +58,6 @@
 			typeof lastSplitSize === 'string'
 				? JSON.parse(lastSplitSize)
 				: lastSplitSize;
-
-		let codes = [];
-		let editorViews = [];
-		let loadTheme = localStorage?.getItem('theme')
-			? githubLightInit()
-			: vscodeDarkInit();
-
-		let editorTheme = new Compartment();
-		const changeTheme = function () {
-			loadTheme = localStorage?.getItem('theme')
-				? vscodeDarkInit()
-				: githubLightInit();
-			for (let i = 0, iLen = codes.length; i < iLen; i++) {
-				editorViews[i].dispatch({
-					effects: editorTheme.reconfigure(loadTheme)
-				});
-			}
-		};
-
-		beforeNavigate(function () {
-			editorViews = [];
-			document.body.removeEventListener('changeTheme', changeTheme);
-		});
 		afterNavigate(function () {
 			pageKey = path.path;
 			window.document.title = meta?.title || 'SHTZ docs';
@@ -103,9 +81,23 @@
 			if (!mdEl) {
 				return;
 			}
-			document.body.addEventListener('changeTheme', changeTheme);
-			codes = mdEl.querySelectorAll('pre code');
+			let editorViews = [];
+			let loadTheme = localStorage?.getItem('theme')
+				? githubLightInit()
+				: vscodeDarkInit();
+			let editorTheme = new Compartment();
+			const codes = mdEl.querySelectorAll('pre code');
 
+			const changeTheme = function () {
+				loadTheme = localStorage?.getItem('theme')
+					? vscodeDarkInit()
+					: githubLightInit();
+				for (let i = 0, iLen = codes.length; i < iLen; i++) {
+					editorViews[i].dispatch({
+						effects: editorTheme.reconfigure(loadTheme)
+					});
+				}
+			};
 			for (let i = 0, iLen = codes.length; i < iLen; i++) {
 				const mdCodeEl = codes[i];
 				const codeText = mdCodeEl.innerText;
@@ -130,6 +122,11 @@
 				});
 				editorViews.push(new EditorView({ parent: mdCodeEl, state }));
 			}
+			document.body.addEventListener('changeTheme', changeTheme);
+			onDestroy(function () {
+				editorViews = [];
+				document.body.removeEventListener('changeTheme', changeTheme);
+			});
 			resizeCodeElHeight();
 		});
 	}
