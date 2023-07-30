@@ -7,7 +7,7 @@ desc: The journey of the event object in sveltekit
 Sure, you don't need to know this stuff, but it sure as hell helps to! \
 To really understand what's going on, let's go under the hood.
 
-## Taking a trip down event avenue
+## Taking a trip down event lane
 - User arrives to website \
   The user's browser make's a request to your SvelteKit server.\
   In this request are details such as the url being requested, headers and cookies
